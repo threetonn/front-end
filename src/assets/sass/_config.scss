@@ -1,0 +1,32 @@
+$title-fontsize: 2.25rem;
+$text-fontsize: 1rem;
+$link-fontsize: 1.5rem;
+
+$aqua-color: #29F5C4;
+$bg-color: #2F2F2F;
+$block-bg-color: #2B2B2B;
+
+$color-visible: 75%;
+$bg-visible: 79%;
+
+$grid-gutter-width: 20px;
+$gutter: $grid-gutter-width;
+
+$xlg: 1200px;
+$lg: 900px;
+$md: 700px;
+$sm: 500px;
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+body {
+  margin: 0 auto;
+  font-family: 'Montserrat', sans-serif;
+  font-size: $text-fontsize;
+  min-width: 550px;
+  position: relative;
+  line-height: 1.65;
+  overflow-x: hidden;
+  color: white;
+  background-color: $bg-color;
+}
