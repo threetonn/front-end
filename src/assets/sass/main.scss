@@ -11,14 +11,12 @@ $size-600: 600px;
 
 * {
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 html {
   scroll-behavior: smooth;
-}
-.header-main {
-  width: 100%;
-  background-color: $bg-color;
 }
 
 a {
@@ -32,38 +30,79 @@ button {
   }
 }
 
-header {
-  margin: 5px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  a {
-    transition: 0.2s;
-    color: white;
-  }
-  a:hover {
-    text-decoration: none;
-    color: $aqua-color;
-  }
-  .header-link {
-    &--logo {
-      font-size: $link-fontsize;
-      letter-spacing: 3px;
-      font-weight: bold;
-      color: $aqua-color;
+.header-main {
+  width: 100%;
+  padding: 5px 20px;
+  background-color: #211c39;
+  border-bottom: 2px solid $green-color;
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    a {
+      transition: 0.2s;
+      color: white;
+    }
+    a:hover {
+      text-decoration: none;
+      color: $green-color;
+    }
+    .header-link {
+      &--logo {
+        font-size: $link-fontsize;
+        letter-spacing: 3px;
+        font-weight: bold;
+        color: $green-color;
+      }
+    }
+    .middle-links a {
+      margin-right: 10px;
     }
   }
-  .middle-links a {
-    margin-right: 10px;
+}
+
+.block-title {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-weight: bold;
+  background-color: #211c39;
+  &--title {
+    margin: 0;
+    padding: 0;
+    font-size: $title-fontsize - 0.5rem;
+    text-transform: uppercase;
+    // @media screen and (max-width: $lg) {
+    //   font-size: $title-fontsize - 0.6rem;
+    // }
+  }
+  &--line {
+    width: 200px;
+    height: 4px;
+    border: 2px solid $green-color;
+    background-color: $green-color;
   }
 }
+
+
 .block-1 {
   width: 100%;
   height: 100vh;
   // min-width: 550px;
   // max-height: 560px;
   position: relative;
-  background-color: $block-bg-color;
+  // background-color: $block-bg-color;
+  // background-color: #37035c;
+  background-color: #73ca70;
+  background-image: url('@/assets/images/bg4.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: difference;
+  background-size: 100% 100%;
   font-weight: bold;
   &--images {
     display: flex;
@@ -85,7 +124,6 @@ header {
     // }
   }
   &--text {
-    width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
@@ -118,7 +156,8 @@ header {
         letter-spacing: 3px;
         font-weight: bold;
         text-transform: capitalize;
-        color: $aqua-color;
+        color: #83ff7f;
+        text-shadow: 0 0 6px rgb(23 88 0);
       }
     }
     .logo-btn {
@@ -129,14 +168,17 @@ header {
       height: 50px;
       font-size: 1rem;
       font-weight: bold;
-      background: rgba(41, 245, 196, 0.75);
       outline: none;
+      background: #a5ff85;
       color: #004b4f;
-      border: 1px solid $aqua-color;
+      border: 1px solid #1f1f1f;
+      box-shadow: 0 0 6px 2px #27272747;
+      border-radius: 2px;
       text-transform: uppercase;
       margin-top: 3%;
       letter-spacing: 1px;
       transition: 0.3s;
+      cursor: pointer;
       
       // @media screen and (max-width: $lg) {
       //   font-size: 0.9rem;
@@ -149,73 +191,74 @@ header {
       //   font-size: 0.7rem;
       // }
       &:hover {
-        cursor: pointer;
         color: white;
         transform: scale(0.95);
-        background: #005742bf;
+        background: #4c8a5b;
+        border: 1px solid #ffffff;
       }
     }
-  }
-}
-.block-title {
-  width: 100%;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  font-weight: bold;
-  &--title {
-    margin: 0;
-    padding: 0;
-    font-size: $title-fontsize - 0.5rem;
-    text-transform: uppercase;
-    // @media screen and (max-width: $lg) {
-    //   font-size: $title-fontsize - 0.6rem;
-    // }
-  }
-  &--line {
-    width: 200px;
-    height: 4px;
-    border: 2px solid $aqua-color;
-    background-color: $aqua-color;
   }
 }
 .block-2 {
   width: 100%;
   padding-top: 60px;
+  padding-bottom: 20px;
   // max-height: 500px;
   display: flex;
   flex-wrap: wrap;
-  background-color: $block-bg-color;
+  // background-color: $block-bg-color;
+  // background-color: #db663a;
   justify-content: space-around;
+  position: relative;
+
+  &--bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    width: 80%;
+    height: 60%;
+    background-image: url('@/assets/images/card-bg2.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgb(172, 212, 112);
+    box-shadow: 0 0 6px 3px #232323;
+    border-radius: 2px;
+  }
 
   // overflow: auto;
   &--card {
     width: 20%;
-    height: 500px;
+    // height: 500px;
     display: flex;
     align-items: center;
     position: relative;
 
-    background-color: #29b582;
-    box-shadow: 0 0 6px 3px #585858;
-    border-radius: 4px;
+    // background-color: #29b582;
+    // background-color: #f5d38e;
+    
     @media screen and (max-width: $xlg) {
       width: 20%;
       height: 250px;
       margin-bottom: 25px;
     }
     @media screen and (max-width: $lg) {
+      width: 30%;
+      height: 250px;
+      margin-bottom: 100px;
+    }
+    @media screen and (max-width: $md) {
       width: 40%;
       height: 250px;
       margin-bottom: 100px;
     }
     img {
+      transition: all 0.4s ease-in-out;
       // width: 100%;
       margin: 0 auto;
       height: 110%;
       width: 110%;
+      z-index: 10;
       @media screen and (max-width: $xlg) {
         height: 120%;
         width: 100%;
@@ -225,6 +268,11 @@ header {
       }
       @media screen and (max-width: $md) {
         height: 100%;
+      }
+    }
+    &:hover {
+      img {
+        transform: scale(1.1);
       }
     }
   }
@@ -237,6 +285,7 @@ header {
     justify-content: space-between;
     width: 100%;
     height: 100%;
+    z-index: 100;
     // height: 500px;
     p {
       // font-size: $title-fontsize - 0.5rem;
@@ -244,7 +293,7 @@ header {
       text-transform: uppercase;
       margin-top: -50px;
       font-weight: bold;
-      color: palegoldenrod;
+      color: $green-color;
       // margin-bottom: 350px;
     }
 
@@ -253,55 +302,110 @@ header {
     }
 
     button {
-      background-color: #c8ba534d;
-      border: 1px solid #fbffa9;
-      color: #fbffa9;
+      // background-color: #c8ba534d;
+      // border: 1px solid #fbffa9;
+      // color: #fbffa9;
+
+      box-shadow: 0 0 6px 2px #686868;
+      background: #a5ff85;
+      color: #004b4f;
+      border: 1px solid #000000;
+      font-weight: bold;
 
       &:hover {
-        background-color: #ffe880;
-        border: 1px solid #bfaf00;
-        color: #666c00;
+        transform: scale(0.95);
+        background: #005709bf;
+        color: white;
+        border: 1px solid $green-color;
+
       }
     }
   }
 }
 .block-3 {
   width: 100%;
-  max-height: 1000px;
+  // max-height: 1000px;
+  padding: 20px 0;
   display: flex;
   flex-wrap: wrap;
-  background-color: $block-bg-color;
-  overflow: hidden;
-  overflow-y: visible;
-  @media screen and (max-width: $md) {
-    height: 700px;
+  justify-content: center;
+  // background-color: $block-bg-color;
+  // overflow: hidden;
+  // overflow-y: visible;
+  // @media screen and (max-width: $md) {
+  //   height: 700px;
+  // }
+
+  &--bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    width: 40%;
+    height: 50%;
+    background-image: url('@/assets/images/card-bg4.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: #91f74e;
+    // background-color: rgb(172, 212, 112);
+    box-shadow: 0 0 6px 3px #232323;
+    border-radius: 10px;
   }
+
   &--card {
-    width: 50%;
+    width: 40%;
     display: flex;
-    flex-direction: row;
-    @media screen and (max-width: $size-1300) {
-      flex-direction: column;
-    }
+    justify-content: center;
+    align-items: flex-end;
+    margin: 5px;
+    position: relative;
+    // background-color: #25373b;
+    // box-shadow: 0 0 6px 2px #202020;
     @media screen and (max-width: $md) {
       justify-content: center;
       align-items: center;
       width: 100%;
     }
-    img {
-      width: 300px;
-      height: 300px;
+    .card-image {
+      width: 100%;
+      max-width: 300px;
+      height: 100%;
+      max-height: 300px;
+      z-index: 10;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
     .information {
-      padding: 0 20px;
-      margin-top: 30px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      // padding: 10px 20px;
+      margin: 0 10px;
+      padding: 10px 0;
+      font-size: 1.25vw;
+      z-index: 10;
+      @media screen and (max-width: $md) {
+        font-size: 1.75vw;
+      }
+      // margin-top: 30px;
       &--trainerName {
-        font-size: $title-fontsize - 1rem;
+        font-size: 2vw;
         font-weight: bold;
+        @media screen and (max-width: $md) {
+          font-size: 3vw;
+        }
       }
       &--trainingType {
+        font-size: 1.5vw;
         font-weight: bold;
-        color: $aqua-color;
+        color: $green-color;
+        @media screen and (max-width: $md) {
+          font-size: 2.5vw;
+        }
         span {
           font-weight: normal;
         }
@@ -310,7 +414,7 @@ header {
   }
 }
 .block-4 {
-  background-color: #2A2A2A;
+  // background-color: #2A2A2A;
   max-height: 500px;
   display: flex;
   justify-content: center;
@@ -422,7 +526,7 @@ header {
   font-size: 1rem;
   background: rgba(41, 245, 196, 0.75);
   color: white;
-  border: 1px solid $aqua-color;
+  border: 1px solid $green-color;
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: 0.3s;
@@ -462,7 +566,7 @@ header {
     width: 40%;
     height: 300px;
     margin-right: 50px;
-    border: 1px solid $aqua-color;
+    border: 1px solid $green-color;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -496,7 +600,7 @@ header {
   &--right {
     width: 50%;
     min-width: 400px;
-    border: 1px solid $aqua-color;
+    border: 1px solid $green-color;
     padding: 30px 75px;
     display: flex;
     flex-direction: column;
@@ -546,14 +650,14 @@ header {
       color: white;
       transition: 0.3s;
       &:hover {
-        color: $aqua-color;
+        color: $green-color;
       }
     }
     &--name {
       text-transform: capitalize;
     }
     &--line {
-      color: $aqua-color;
+      color: $green-color;
     }
     &--text {
       white-space: nowrap;
@@ -602,7 +706,7 @@ header {
   border-radius: 5px;
   transition: 0.3s;
   &:hover {
-    background-color: $aqua-color;
+    background-color: $green-color;
   }
 }
 .trainings-block {
@@ -648,7 +752,7 @@ header {
 .default-btn {
   width: 150px;
   height: 45px;
-  border: 1px solid $aqua-color;
+  border: 1px solid $green-color;
   box-sizing: border-box;
   background: none;
   color: white;
@@ -659,10 +763,10 @@ header {
   
   &:hover {
     a {
-      color: #004b4f;
+      color: #ffffff;
     }
-    color: #004b4f;
+    color: #ffffff;
     font-weight: bold;
-    background: rgba(41, 245, 196, 0.75);
+    background: #046700bf;
   }
 }

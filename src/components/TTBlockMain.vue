@@ -12,9 +12,9 @@
         <p class="logo-text">
           клуб <span class="logo-text--3tonn">3Тонн</span>
         </p>
-        <p>✓ присоединяйся</p>
-        <p>✓ укрепляйся</p>
-        <p>✓ становись сильнее!</p>
+        <p>✓ присоединяйтесь</p>
+        <p>✓ укрепляйтесь</p>
+        <p>✓ становитесь сильнее!</p>
         <router-link class="logo-btn" to="subscriptions">
           Записаться
         </router-link>
