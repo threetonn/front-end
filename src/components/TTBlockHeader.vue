@@ -1,7 +1,9 @@
 <template>
   <div class="header-main">
     <header class="header">
-      <router-link to="main" class="header-link--logo">3Тонн</router-link>
+      <router-link :to="{ name: 'main' }" class="header-link--logo"
+        >3Тонн</router-link
+      >
       <div class="middle-links">
         <a
           v-for="link in links"

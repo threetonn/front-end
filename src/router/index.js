@@ -7,12 +7,6 @@ const routes = [
     path: "/",
     name: "main",
     component: page("views/MainView.vue"),
-    children: [
-      {
-        path: "/main",
-        component: page("views/MainView.vue"),
-      },
-    ],
   },
   {
     path: "/about",

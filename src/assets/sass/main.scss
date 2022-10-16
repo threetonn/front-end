@@ -97,11 +97,14 @@ button {
   position: relative;
   // background-color: $block-bg-color;
   // background-color: #37035c;
-  background-color: #73ca70;
-  background-image: url('@/assets/images/bg4.png');
+  background-image: url('@/assets/images/bg2.png');
   background-repeat: no-repeat;
   background-position: center;
-  background-blend-mode: difference;
+  background-color: #2c244d;
+  // background-color: #1a033b;
+  background-blend-mode: luminosity;
+  // background-color: #73ca70;
+  // background-blend-mode: difference;
   background-size: 100% 100%;
   font-weight: bold;
   &--images {
@@ -341,8 +344,8 @@ button {
     bottom: 0;
     left: 0;
     z-index: 0;
-    width: 40%;
-    height: 50%;
+    width: 30%;
+    height: 60%;
     background-image: url('@/assets/images/card-bg4.png');
     background-repeat: no-repeat;
     background-size: cover;
@@ -453,7 +456,7 @@ button {
         color: white;
         text-decoration: none;
         &:hover {
-          color: grey;
+          color: $green-color;
         }
       }
       &--title {

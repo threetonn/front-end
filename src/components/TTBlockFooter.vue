@@ -3,7 +3,7 @@
     <div class="footer-wrapper">
       <div class="footer-block">
         <p class="footer-block--title footer-link">
-          <router-link to="main">3 ТОНН</router-link>
+          <router-link :to="{ name: 'main' }">3 ТОНН</router-link>
         </p>
         <div class="footer-block--text">
           <p>
