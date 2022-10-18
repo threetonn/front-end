@@ -1,6 +1,6 @@
 <template>
   <div class="block-2--card">
-    <div class="block-2--bg"></div>
+    <!-- <div class="block-2--bg"></div> -->
     <img
       :src="require(`../assets/images/programs/${program.imageName}.png`)"
       :alt="program.imageAlt"

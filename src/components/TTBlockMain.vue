@@ -1,5 +1,6 @@
 <template>
   <div class="block-1">
+    <div class="block-1--bg"></div>
     <div class="block-1--images">
       <!-- <div class="img2">
         <img src="@/assets/images/women.png" alt="women" />
