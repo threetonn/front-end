@@ -19,10 +19,9 @@
         <a href="#trainers" class="header-link">Тренера</a> -->
       </div>
       <div>
-        <router-link to="signin" class="header-link--auth">Войти</router-link> |
-        <router-link to="signup" class="header-link--reg"
-          >Регистрация</router-link
-        >
+        <a @click="displaySignInForm" class="header-link--auth">Войти</a>
+        |
+        <a @click="displaySignUpForm" class="header-link--reg">Регистрация</a>
       </div>
     </header>
   </div>
@@ -37,8 +36,18 @@ export default {
     const store = useStore();
     const links = computed(() => store.getters.getLinks);
 
+    const displaySignInForm = () => {
+      store.dispatch("displayActiveForm", "signin");
+    };
+
+    const displaySignUpForm = () => {
+      store.dispatch("displayActiveForm", "signup");
+    };
+
     return {
       links,
+      displaySignInForm,
+      displaySignUpForm,
     };
   },
 };

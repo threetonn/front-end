@@ -1,5 +1,8 @@
 <template>
   <div class="main">
+    <div class="login-from-wrapper" v-if="loginForm.showForm">
+      <TTLoginForm :formType="loginForm.formType"></TTLoginForm>
+    </div>
     <TTBlockHeader></TTBlockHeader>
     <TTBlockMain></TTBlockMain>
     <TTBlockTitle hashLink="program" titleName="Наши программы"></TTBlockTitle>
@@ -37,6 +40,7 @@ import TTBlockSchedule from "@/components/TTBlockSchedule.vue";
 import TTBlockTitle from "@/components/TTBlockTitle.vue";
 import TTCardProgram from "@/components/TTCardProgram.vue";
 import TTCardTrainer from "@/components/TTCardTrainer.vue";
+import TTLoginForm from "@/components/TTLoginForm.vue";
 
 import { computed } from "vue";
 import { useStore } from "vuex";
@@ -50,17 +54,22 @@ export default {
     TTBlockTitle,
     TTCardProgram,
     TTCardTrainer,
+    TTLoginForm,
   },
   setup() {
     const store = useStore();
     const programs = computed(() => store.getters.getProgramCards);
     const trainers = computed(() => store.getters.getTrainerCards);
     const scheduleEvents = computed(() => store.getters.getScheduleEvents);
+    const loginForm = computed(() => store.getters.getActiveForm);
+
+    console.log(loginForm.value);
 
     return {
       programs,
       trainers,
       scheduleEvents,
+      loginForm,
     };
   },
 };
