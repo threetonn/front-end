@@ -30,7 +30,6 @@ export default {
       commit("DISPLAY_ACTIVE_FORM", payload);
     },
     hideActiveForm({ commit }) {
-      console.log("123");
       commit("HIDE_ACTIVE_FORM");
     },
   },
