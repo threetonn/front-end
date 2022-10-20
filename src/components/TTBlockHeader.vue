@@ -18,11 +18,18 @@
         <a href="#timetable" class="header-link">Расписание</a>
         <a href="#trainers" class="header-link">Тренера</a> -->
       </div>
-      <div>
-        <a @click="displaySignInForm" class="header-link--auth">Войти</a>
-        |
-        <a @click="displaySignUpForm" class="header-link--reg">Регистрация</a>
-      </div>
+      <template v-if="user">
+        <div>
+          <a class="header-link--auth">{{ user.name }}</a>
+        </div>
+      </template>
+      <template v-else>
+        <div>
+          <a @click="displaySignInForm" class="header-link--auth">Войти</a>
+          |
+          <a @click="displaySignUpForm" class="header-link--reg">Регистрация</a>
+        </div>
+      </template>
     </header>
   </div>
 </template>
@@ -44,10 +51,14 @@ export default {
       store.dispatch("displayActiveForm", "signup");
     };
 
+    const user = computed(() => store.getters.getUser);
+    console.log(user);
+
     return {
       links,
       displaySignInForm,
       displaySignUpForm,
+      user,
     };
   },
 };
