@@ -52,7 +52,7 @@ export default {
     };
 
     const user = computed(() => store.getters.getUser);
-    console.log(user);
+    // console.log(user);
 
     return {
       links,

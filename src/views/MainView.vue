@@ -63,7 +63,7 @@ export default {
     const scheduleEvents = computed(() => store.getters.getScheduleEvents);
     const loginForm = computed(() => store.getters.getActiveForm);
 
-    console.log(loginForm.value);
+    // console.log(loginForm.value);
 
     return {
       programs,

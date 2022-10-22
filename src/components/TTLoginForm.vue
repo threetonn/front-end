@@ -234,6 +234,7 @@
               <div class="error-msg">{{ error.$message }}</div>
             </div>
           </div>
+          <div v-if="serverError" class="error-msg">{{ serverError }}</div>
         </div>
       </form>
     </div>
@@ -282,6 +283,7 @@
               <div class="error-msg">{{ error.$message }}</div>
             </div>
           </div>
+          <div v-if="serverError" class="error-msg">{{ serverError }}</div>
         </div>
       </form>
     </div>
@@ -297,6 +299,8 @@
 </template>
 
 <script>
+import { $SERVICES } from "@/services/api";
+import { $ERRORS_LIST } from "@/services/errors";
 import { reactive, computed, ref } from "vue";
 import { useStore } from "vuex";
 import { useVuelidate } from "@vuelidate/core";
@@ -316,6 +320,7 @@ export default {
     const store = useStore();
 
     const isLoading = ref(false);
+    const serverError = ref(null);
 
     const state = reactive({
       signin: {
@@ -440,6 +445,7 @@ export default {
     };
 
     const signup = () => {
+      serverError.value = null;
       isLoading.value = true;
       v$.value.signup.$touch();
 
@@ -449,7 +455,7 @@ export default {
       }
 
       const sendFormData = async () => {
-        const rawResponse = await fetch("http://172.28.26.171:8000/signup", {
+        const rawResponse = await fetch(`${$SERVICES.API}/signup`, {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -469,52 +475,59 @@ export default {
     };
 
     const signin = () => {
+      serverError.value = null;
       isLoading.value = true;
       v$.value.signin.$touch();
 
       if (v$.value.signin.$errors.length) {
         isLoading.value = false;
-
-        return console.log("Невалидно");
       }
 
       const sendFormData = async () => {
-        const rawResponse = await fetch("http://172.28.26.171:8000/signin", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(state.signin),
-        });
-        const content = await rawResponse.json();
-
-        content && store.dispatch("setToken", content);
-
-        const getUser = async () => {
-          const tokens = store.getters.getTokens;
-          const rawResponse = await fetch("http://172.28.26.171:8000/me", {
-            method: "GET",
+        try {
+          const rawResponse = await fetch(`${$SERVICES.API}/signin`, {
+            method: "POST",
             headers: {
-              Accept: "*/*",
-              Authorization: `Bearer ${tokens.accessToken}`,
+              Accept: "application/json",
+              "Content-Type": "application/json",
             },
+            body: JSON.stringify(state.signin),
           });
           const content = await rawResponse.json();
-
-          content && store.dispatch("setUser", content);
-
-          store.dispatch("hideActiveForm");
-
+          content && store.dispatch("setToken", content);
+          getUser();
+        } catch (error) {
           isLoading.value = false;
-        };
+          serverError.value = $ERRORS_LIST.NOT_CONNECTED;
+          throw new Error(error);
+        }
 
-        getUser();
+        const getUser = async () => {
+          try {
+            const tokens = store.getters.getTokens;
+            const rawResponse = await fetch(`${$SERVICES.API}/me`, {
+              method: "GET",
+              headers: {
+                Accept: "*/*",
+                Authorization: `Bearer ${tokens.accessToken}`,
+              },
+            });
+            const content = await rawResponse.json();
+
+            content && store.dispatch("setUser", content);
+
+            store.dispatch("hideActiveForm");
+
+            isLoading.value = false;
+          } catch (error) {
+            isLoading.value = false;
+            serverError.value = $ERRORS_LIST.NOT_USER_FIND;
+            throw new Error(error);
+          }
+        };
       };
 
       sendFormData();
-
-      return console.log("Валидно");
     };
 
     // console.log(v$.value);
@@ -526,6 +539,7 @@ export default {
       signup,
       signin,
       isLoading,
+      serverError,
     };
   },
 };
