@@ -1,3 +1,5 @@
+import { $SERVICES } from "@/services/api";
+
 export default {
   state: {
     accessToken: "",
@@ -22,16 +24,30 @@ export default {
       state.refreshToken = payload.refresh_token;
       state.authorization = true;
     },
-    SET_USER(state, payload) {
-      state.user = payload;
+    SET_USER(state, user) {
+      state.user = user;
+    },
+    LOGOUT_USER(state) {
+      state.user = null;
+      state.refreshToken = null;
+      state.accessToken = null;
     },
   },
   actions: {
     setToken({ commit }, payload) {
       payload && commit("SET_TOKEN", payload);
     },
-    setUser({ commit }, payload) {
-      payload && commit("SET_USER", payload);
+    setUser({ commit }, user) {
+      user && commit("SET_USER", user);
+    },
+    async logoutUser({ commit, state }) {
+      try {
+        await fetch(`${$SERVICES.API}/logout`, state.accessToken);
+
+        commit("LOGOUT_USER");
+      } catch (error) {
+        throw new Error(error);
+      }
     },
   },
 };
