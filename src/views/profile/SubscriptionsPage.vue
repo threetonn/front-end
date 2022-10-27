@@ -1,5 +1,7 @@
 <template>
-  <h1>Subcriptions</h1>
+  <div class="profile-page">
+    <h1 class="profile-page__title">Абонементы</h1>
+  </div>
 </template>
 
 <script>

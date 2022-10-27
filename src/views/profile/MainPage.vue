@@ -4,10 +4,14 @@
       <div class="profile__routes-block">
         <ul class="profile__links">
           <li class="profile__link" v-for="tab in tabs" :key="tab">
-            <router-link :to="{ name: tab.route }">{{ tab.name }}</router-link>
+            <router-link
+              active-class="profile__link--active"
+              :to="{ name: tab.route }"
+              >{{ tab.name }}</router-link
+            >
           </li>
-          <li>
-            <a class="profile__link">Выйти</a>
+          <li class="profile__link">
+            <a>Выйти</a>
           </li>
         </ul>
       </div>
@@ -44,8 +48,13 @@ export default {
         route: "profile.trainers",
       },
       {
+        icon: "ruble-sign",
+        name: "Персонал",
+        route: "profile.staff",
+      },
+      {
         icon: "hand-holding-usd",
-        name: "Участники",
+        name: "Клиенты",
         route: "profile.users",
       },
     ]);

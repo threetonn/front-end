@@ -26,7 +26,10 @@
       titleName="Расписание тренировок"
     ></TTBlockTitle>
     <div class="block-4">
-      <TTBlockSchedule :events="scheduleEvents"></TTBlockSchedule>
+      <TTBlockSchedule
+        style="width: 80%"
+        :events="scheduleEvents"
+      ></TTBlockSchedule>
     </div>
     <TTBlockFooter></TTBlockFooter>
   </div>

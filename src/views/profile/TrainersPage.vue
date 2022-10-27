@@ -1,5 +1,7 @@
 <template>
-  <h1>Trainers</h1>
+  <div class="profile-page">
+    <h1 class="profile-page__title">Тренера</h1>
+  </div>
 </template>
 
 <script>

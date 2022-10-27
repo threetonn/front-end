@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import role from "../middleware/role";
+// import role from "../middleware/role";
+// meta: {
+//   middleware: role,
+// },
 
 const page = (path) => () => import(`@/${path}`).then((m) => m.default || m);
 
@@ -14,9 +17,6 @@ const routes = [
     path: "/profile",
     name: "profile",
     component: page("views/profile/MainPage.vue"),
-    meta: {
-      middleware: role,
-    },
     children: [
       { path: "", redirect: { name: "profile.account" } },
       {
@@ -43,6 +43,11 @@ const routes = [
         path: "users",
         name: "profile.users",
         component: page("views/profile/UsersPage.vue"),
+      },
+      {
+        path: "staff",
+        name: "profile.staff",
+        component: page("views/profile/StaffPage.vue"),
       },
     ],
   },

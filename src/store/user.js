@@ -17,6 +17,9 @@ export default {
     getUser(state) {
       return state.user;
     },
+    getPersonalScheduleEvents(state) {
+      return state.user.workouts;
+    },
   },
   mutations: {
     SET_TOKEN(state, payload) {
