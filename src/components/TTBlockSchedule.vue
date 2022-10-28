@@ -8,7 +8,7 @@
       :events="events"
       :time-from="8 * 60"
       :time-to="22 * 60"
-      :on-event-click="onEventClick"
+      :on-event-click="!noEventClick && onEventClick"
     ></VueCal>
 
     <div class="card-popup" v-if="showDialog">
@@ -60,6 +60,7 @@ export default {
   },
   props: {
     events: Object,
+    noEventClick: Boolean,
   },
   setup() {
     const selectedEvent = ref({});

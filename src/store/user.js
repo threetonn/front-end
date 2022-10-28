@@ -20,6 +20,9 @@ export default {
     getPersonalScheduleEvents(state) {
       return state.user.workouts;
     },
+    getUserSubscriptionID(state) {
+      return state.user.subscriptionID;
+    },
   },
   mutations: {
     SET_TOKEN(state, payload) {
@@ -29,6 +32,9 @@ export default {
     },
     SET_USER(state, user) {
       state.user = user;
+    },
+    SET_USER_SUBSCRIPTION(state, id) {
+      state.user.subscriptionID = id;
     },
     LOGOUT_USER(state) {
       state.user = null;
@@ -42,6 +48,9 @@ export default {
     },
     setUser({ commit }, user) {
       user && commit("SET_USER", user);
+    },
+    setUserSubscription({ commit }, id) {
+      id && commit("SET_USER_SUBSCRIPTION", id);
     },
     async logoutUser({ commit, state }) {
       try {

@@ -20,7 +20,7 @@
       <p class="information--trainerInfo">
         {{ trainer.trainerDesc }}
       </p>
-      <button class="default-btn">Написать</button>
+      <!-- <button class="default-btn">Написать</button> -->
     </div>
   </div>
 </template>

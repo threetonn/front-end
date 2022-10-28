@@ -28,6 +28,7 @@
     <div class="block-4">
       <TTBlockSchedule
         style="width: 80%"
+        noEventClick
         :events="scheduleEvents"
       ></TTBlockSchedule>
     </div>

@@ -1169,6 +1169,7 @@ $size-600: 600px;
   &__routes-block {
     width: 20%;
     padding: 10px;
+    min-width: 150px;
   }
 
   &__links {    
@@ -1217,6 +1218,14 @@ $size-600: 600px;
     color: $green-color;
     text-transform: uppercase;
     margin-bottom: 10px;
+  }
+
+  &__subscriptions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    overflow: auto;
+    height: 550px;
   }
 
   &__toggle-shedule {
@@ -1440,5 +1449,232 @@ $size-600: 600px;
       color: #989898;
       font-weight: bold;
     }
+  }
+}
+
+.subscription-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  width: 30%;
+  margin: 5px;
+  border-radius: 6px;
+  padding: 10px;
+  background-color: #6e667f;
+  font-weight: bold;
+  justify-content: space-between;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  &--basic {
+    // background-color: #c2ea85;
+    // border: 1px solid #c5ff81;
+    // color: #292929;
+
+    background-color: #cbff7c6e;
+    border: 1px solid #c5ff81;
+    color: #e1ffe7;
+
+    &:hover {
+      box-shadow: 0 0 6px 1px #99ff99a0 inset;
+    }
+
+    .subscription-card__title {
+      color: #c5ff81;
+    }
+
+    .price {
+      color: #c5ff81;
+    }
+
+    button {
+      background-color: #8dbb6a;
+      color: #343434;
+
+      &:hover {
+        background-color: #9fc87f;
+        color: #323232;
+      }
+    }
+
+    svg {
+      path {
+        stroke: #c5ff81;
+      }
+    }
+  }
+
+  &--extended {
+    // background-color: #eae285;
+    // border: 1px solid #f7ff81;
+    // color: #292929;
+
+    background-color: #eae2858c;
+    border: 1px solid #f7ff81;
+    color: #f4f2a0;
+
+    &:hover {
+      box-shadow: 0 0 6px 1px #f5ff99a0 inset;
+    }
+
+    .subscription-card__title {
+      color: #f7ff81;
+    }
+
+    .price {
+      color: #f7ff81;
+    }
+
+    button {
+      background-color: #b0bb6a;
+      color: #343434;
+
+      &:hover {
+        background-color: #bec87f;
+        color: #323232;
+      }
+    }
+
+    svg {
+      path {
+        stroke: #f7ff81;
+      }
+    }
+  }
+
+  &--extended-plus {
+    background-color: #ad85ea54;
+    border: 1px solid #c281ff;
+    color: aliceblue;
+
+    &:hover {
+      box-shadow: 0 0 6px 1px #c599ffa0 inset;
+    }
+
+    .subscription-card__title {
+      color: #c281ff;
+    }
+
+    .price {
+      color: #c281ff;
+    }
+
+    svg {
+      path {
+        stroke: #c281ff;
+      }
+    }
+
+    button {
+      background-color: #956abb;
+      color: aliceblue;
+
+      &:hover {
+        background-color: #ab7fc8;
+        color: rgb(241, 246, 250);
+      }
+    }
+  }
+
+  &__title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+  }
+
+  &__price-month {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+
+    .price {
+      font-size: 2rem;
+    }
+
+    svg {
+      width: 24px;
+      margin: 0 2px;
+    }
+
+    span {
+      &:last-child {
+        margin-left: 2px;
+        margin-top: 10px;
+        font-size: 0.75rem;
+      }
+    }
+  }
+
+  &__price-year {
+    display: flex;
+    align-items: center;
+
+    .price {
+      font-size: 1.5rem;
+    }
+
+    &--description {
+      font-size: 0.7rem;
+    }
+
+    svg {
+      width: 24px;
+      margin: 0 2px;
+    }
+
+    span {
+      &:last-child {
+        margin-left: 2px;
+        margin-top: 8px;
+        font-size: 0.6rem;
+      }
+    }
+  }
+
+  &__list {
+    margin: 15px 0;
+    li {
+      list-style-type: none;
+    }
+  }
+
+  &__list-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    svg {
+      margin-right: 5px;
+    }
+  }
+
+  &__button {
+    outline: none;
+    border: none;
+    background-color: #2c2c2c;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    padding: 15px 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 6px 2px #38383874;
+    transition: all 0.3s;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+
+  @media screen and (max-width: $xlg) {
+    width: 30%;
+  }
+
+  @media screen and (max-width: $lg) {
+    width: 45%;
+  }
+
+  @media screen and (max-width: $md) {
+    width: 100%;
   }
 }

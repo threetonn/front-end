@@ -332,7 +332,7 @@ export default {
       isLoading.value = true;
       v$.value.$touch();
 
-      if (v$.value.signup.$errors.length) {
+      if (v$.value.$errors.length) {
         isLoading.value = false;
         return console.log("Невалидно");
       }
@@ -345,7 +345,7 @@ export default {
               Accept: "application/json",
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(state.signup),
+            body: JSON.stringify(state),
           });
           const content = await rawResponse.json();
 
