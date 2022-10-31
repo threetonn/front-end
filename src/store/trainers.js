@@ -33,6 +33,14 @@ export default {
         trainingType: ["Групповые"],
         trainerDesc: "Крутой тренер",
       },
+      {
+        id: 5,
+        name: "Лунина Инга",
+        img: "trainer6",
+        imgAlt: "trainer",
+        trainingType: ["Групповые"],
+        trainerDesc: "Крутой тренер",
+      },
     ],
   },
   getters: {

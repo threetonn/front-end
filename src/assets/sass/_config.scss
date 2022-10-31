@@ -60,6 +60,8 @@ a {
 }
 
 button {
+  font-family: 'Montserrat', sans-serif;
+  font-size: $text-fontsize;
   &:hover {
     cursor: pointer;
   }
