@@ -3,9 +3,10 @@ import base from "./base";
 import user from "./user";
 import links from "./links";
 import programs from "./programs";
-import trainers from "./trainers";
+// import trainers from "./trainers";
 import schedule from "./schedule";
 import subscriptions from "./subscriptions";
+import usersList from "./usersList";
 
 export default createStore({
   modules: {
@@ -13,8 +14,9 @@ export default createStore({
     user,
     links,
     programs,
-    trainers,
+    // trainers,
     schedule,
     subscriptions,
+    usersList,
   },
 });

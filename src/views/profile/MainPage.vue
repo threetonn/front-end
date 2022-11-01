@@ -16,6 +16,9 @@
         </ul>
       </div>
       <div class="profile__content">
+        <template v-if="showUserCard">
+          <TTCardUserProfile :user="selectedUser"></TTCardUserProfile>
+        </template>
         <router-view></router-view>
       </div>
     </div>
@@ -23,8 +26,14 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+import TTCardUserProfile from "@/components/TTCardUserProfile.vue";
+
 export default {
+  components: {
+    TTCardUserProfile,
+  },
   setup() {
     const tabs = ref([
       {
@@ -59,8 +68,14 @@ export default {
       },
     ]);
 
+    const store = useStore();
+    const showUserCard = computed(() => store.getters.getShowUserCard);
+    const selectedUser = computed(() => store.getters.getSelectedUser);
+
     return {
       tabs,
+      selectedUser,
+      showUserCard,
     };
   },
 };

@@ -492,10 +492,10 @@ $size-600: 600px;
 .block-3 {
   width: 100%;
   // max-height: 1000px;
-  padding: 20px 0;
+  padding: 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   // background-color: $block-bg-color;
   // overflow: hidden;
   // overflow-y: visible;
@@ -1684,8 +1684,8 @@ $size-600: 600px;
   align-items: center;
   // justify-content: space-between;
   width: 100%;
-  border: 1px solid rgba(171, 255, 206, 0.2);
-  background-color: #e6c3ff26;
+  border: 1px solid #acffab33;
+  background-color: #d2ffc326;
   border-radius: 4px;
   padding: 10px 10px 50px 10px;
   // margin: 5px 5px 10px 5px;
@@ -1704,7 +1704,7 @@ $size-600: 600px;
 
   &__title {
     text-align: center;
-    color: #88e6a5;
+    color: #b4e688;
     font-weight: bold;
     font-size: 1.2rem;
   }
@@ -1714,8 +1714,8 @@ $size-600: 600px;
     width: 175px;
     height: 175px;
     border-radius: 150px;
-    border: 1px solid #5e7063;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #88e6a5 100%);
+    border: 1px solid #60705e;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #a8e688 100%);
   }
 
   &__about-title {
@@ -1734,7 +1734,7 @@ $size-600: 600px;
     position: absolute;
     bottom: 0;
     border-radius: 0 0 4px 4px;
-    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #88e6a6 100%);
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #a8e688 100%);
     font-size: 1.5rem;
     font-weight: bold;
     transition: all 0.2s;

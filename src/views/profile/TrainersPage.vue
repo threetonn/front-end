@@ -20,21 +20,30 @@
 
 <script>
 import { useStore } from "vuex";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 export default {
   setup() {
     const store = useStore();
-    const trainers = computed(() => store.getters.getTrainerCards);
-    const showInfo = ref(null);
+    const trainers = computed(() => store.getters.getUsersByRole("trainer"));
+    // const showInfo = ref(null);
 
     const showTrainerInfo = (id) => {
-      showInfo.value === id ? (showInfo.value = null) : (showInfo.value = id);
+      store.dispatch("showUserCard");
+      store.dispatch(
+        "selectUser",
+        trainers.value.find((user) => user.id == id)
+      );
+      // showInfo.value === id ? (showInfo.value = null) : (showInfo.value = id);
+    };
+
+    const closeTrainerInfo = () => {
+      store.dispatch("hideUserCard");
     };
 
     return {
       trainers,
-      showInfo,
       showTrainerInfo,
+      closeTrainerInfo,
     };
   },
 };
