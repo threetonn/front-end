@@ -7,8 +7,8 @@
       <div class="subscription-card__text-block">
         <p class="subscription-card__title">{{ subscription.title }}</p>
         <p class="subscription-card__price-month">
-          <span class="price">{{ subscription.priceM }}</span>
-          <span>руб./месяц</span>
+          <span class="price">{{ subscription.price }}</span>
+          <span>руб./день</span>
         </p>
         <div>
           <p class="subscription-card__price-year--description">
@@ -16,9 +16,20 @@
           </p>
           <p class="subscription-card__price-year">
             <span class="price">
-              {{ Math.floor(subscription.priceY / 12) }}
+              {{
+                subscriptioDiscountCalculation(
+                  subscription.price * state.subscriptionDays
+                )
+              }}
             </span>
-            <span>руб./месяц</span>
+            <span>руб./за</span>
+            <span class="days">{{ state.subscriptionDays }}</span>
+            <span>{{
+              getNoun(state.subscriptionDays, "день", "дня", "дней")
+            }}</span>
+          </p>
+          <p class="discount">
+            Скидка: <span>{{ (computedDiscount * 100).toFixed(2) }}%</span>
           </p>
         </div>
       </div>
@@ -48,18 +59,51 @@
         </li>
       </ul>
     </div>
-    <button
-      @click="activateSubscription(subscription.id)"
-      class="subscription-card__button"
-    >
-      Активировать
-    </button>
+    <div>
+      <div class="subscription-card__sub-date">
+        <p>Начало: {{ currentDate.toLocaleDateString() }}</p>
+        <p>Конец: {{ endDate.toLocaleDateString() }}</p>
+      </div>
+
+      <div
+        class="lf-inputs__wrapper"
+        :class="{ error: v$.subscriptionDays.$errors.length }"
+      >
+        <input
+          class="subscription-card__days-input"
+          type="number"
+          name="sub-data"
+          autocomplete="off"
+          placeholder="Дни абонемента"
+          v-model.number="state.subscriptionDays"
+        />
+        <div
+          class="input-errors"
+          v-for="error of v$.subscriptionDays.$errors"
+          :key="error.$uid"
+        >
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+      <button
+        @click="activateSubscription(subscription.id)"
+        class="subscription-card__button"
+        :disabled="isValid"
+        :class="isValid && 'disabled'"
+      >
+        Активировать
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
-import { computed } from "vue";
+// import { $SERVICES } from "@/services/api";
+import { computed, ref, watch, reactive } from "vue";
 import { useStore } from "vuex";
+import { getNoun } from "@/services/noun.js";
+import { useVuelidate } from "@vuelidate/core";
+import { helpers, required, between } from "@vuelidate/validators";
 export default {
   props: {
     subscription: Object,
@@ -72,6 +116,68 @@ export default {
     );
     const userSubscription = computed(
       () => store.getters.getUserSubscriptionID
+    );
+
+    const state = reactive({
+      subscriptionDays: 1,
+      subscriptionDiscount: 0.05,
+    });
+
+    const computedDiscount = computed(
+      () => (state.subscriptionDays * state.subscriptionDiscount) / 100
+    );
+
+    const subscriptioDiscountCalculation = (sum) => {
+      return Math.round(sum - sum * computedDiscount.value);
+    };
+
+    const isValid = ref(false);
+
+    const currentDate = new Date();
+    const endDate = ref(
+      new Date(
+        new Date().setDate(new Date().getDate() + state.subscriptionDays)
+      )
+    );
+
+    const rules = computed(() => {
+      return {
+        subscriptionDays: {
+          required: helpers.withMessage(
+            "Поле обязательно для заполнения",
+            required
+          ),
+          between: helpers.withMessage(
+            "Абонемент не может быть меньше 1 и больше 365 дней",
+            between(1, 365)
+          ),
+        },
+      };
+    });
+
+    const v$ = useVuelidate(rules, state);
+
+    const checkSubscription = () => {
+      // serverError.value = null;
+      v$.value.$touch();
+
+      if (v$.value.$errors.length) {
+        isValid.value = true;
+        return console.log("Невалидно");
+      }
+
+      isValid.value = false;
+      return console.log("Валидно");
+    };
+
+    watch(
+      () => state.subscriptionDays,
+      () => {
+        checkSubscription();
+        endDate.value = new Date(
+          new Date().setDate(new Date().getDate() + state.subscriptionDays)
+        );
+      }
     );
 
     // const filterSubscriptions = subscriptionsCards.value.filter(
@@ -101,7 +207,15 @@ export default {
     };
 
     return {
+      state,
+      v$,
       activateSubscription,
+      getNoun,
+      currentDate,
+      endDate,
+      isValid,
+      subscriptioDiscountCalculation,
+      computedDiscount,
     };
   },
 };
