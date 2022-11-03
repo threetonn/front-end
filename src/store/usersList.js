@@ -82,17 +82,17 @@ export default {
     SELECT_USER(state, user) {
       state.selectedUser = user;
     },
-    UPDATE_USERS_LIST(state, users) {
-      if (Array.isArray(users) && users.length > 0) {
-        state.usersList = [...state.usersList, ...users];
-        state.usersList = [...new Set(state.usersList.map((user) => user.id))];
-      }
+    // UPDATE_USERS_LIST(state, users) {
+    //   if (Array.isArray(users) && users.length > 0) {
+    //     state.usersList = [...state.usersList, ...users];
+    //     state.usersList = [...new Set(state.usersList.map((user) => user.id))];
+    //   }
 
-      if (!Array.isArray(users) && typeof users === "object") {
-        !state.usersList.find(users.id) &&
-          (state.usersList = [...state.usersList, users]);
-      }
-    },
+    //   if (!Array.isArray(users) && typeof users === "object") {
+    //     !state.usersList.find(users.id) &&
+    //       (state.usersList = [...state.usersList, users]);
+    //   }
+    // },
   },
   actions: {
     hideUserCard({ commit }) {
@@ -104,8 +104,8 @@ export default {
     selectUser({ commit }, user) {
       commit("SELECT_USER", user);
     },
-    updateUsersList({ commit }, users) {
-      users && commit("UPDATE_USERS_LIST", users);
-    },
+    // updateUsersList({ commit }, users) {
+    //   users && commit("UPDATE_USERS_LIST", users);
+    // },
   },
 };

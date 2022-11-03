@@ -8,7 +8,7 @@
       :events="events"
       :time-from="8 * 60"
       :time-to="22 * 60"
-      :on-event-click="!noEventClick && onEventClick"
+      :on-event-click="!noEventClick ? onEventClick : null"
     ></VueCal>
 
     <div class="card-popup" v-if="showDialog">

@@ -16,9 +16,7 @@
         <p>✓ присоединяйтесь</p>
         <p>✓ укрепляйтесь</p>
         <p>✓ становитесь сильнее!</p>
-        <router-link class="logo-btn" to="subscriptions">
-          Записаться
-        </router-link>
+        <router-link class="logo-btn" to="/"> Записаться </router-link>
       </div>
     </div>
   </div>

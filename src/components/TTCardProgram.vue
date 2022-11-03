@@ -8,9 +8,9 @@
     <div class="block-2--image-text">
       <p>{{ program.nameRU }}</p>
 
-      <router-link to="subscriptions">
-        <button class="default-btn">Записаться</button>
-      </router-link>
+      <!-- <router-link> -->
+      <button class="default-btn">Записаться</button>
+      <!-- </router-link> -->
     </div>
   </div>
 </template>

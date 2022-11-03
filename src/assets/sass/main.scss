@@ -1364,9 +1364,9 @@ $size-600: 600px;
   &__input {
     width: 100%;
     height: 40px;
-    background: #3535351a;
+    background: #ffffff1a;
     border-radius: 2px;
-    border: 1px solid rgb(161 166 255 / 25%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     text-decoration: none;
     outline: none;
     color: #ceff84;
@@ -1376,11 +1376,11 @@ $size-600: 600px;
 
     &[disabled] {
       cursor: not-allowed;
-      background: #7878781a;
-      border: 1px solid rgba(73, 73, 73, 0.25);
+      background: #8282821a;
+      border: 1px solid rgba(141, 141, 141, 0.25);
 
       &:hover {
-        border: 1px solid rgba(73, 73, 73, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.25);
       }
     }
 
@@ -1522,7 +1522,7 @@ $size-600: 600px;
       color: #343434;
 
       &:hover {
-        background-color: #9fc87f;
+        background-color: #b0de8c;
         color: #323232;
       }
     }
@@ -1571,11 +1571,11 @@ $size-600: 600px;
     }
 
     button {
-      background-color: #b0bb6a;
+      background-color: #bbb86a;
       color: #343434;
 
       &:hover {
-        background-color: #bec87f;
+        background-color: #d4d171;
         color: #323232;
       }
     }

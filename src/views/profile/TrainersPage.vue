@@ -24,7 +24,7 @@ import { computed } from "vue";
 export default {
   setup() {
     const store = useStore();
-    const trainers = computed(() => store.getters.getUsersByRole("trainer"));
+    const trainers = computed(() => store.getters.getUsersByRole);
     // const showInfo = ref(null);
 
     const showTrainerInfo = (id) => {

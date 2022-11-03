@@ -63,7 +63,7 @@ export default {
   setup() {
     const store = useStore();
     const programs = computed(() => store.getters.getProgramCards);
-    const trainers = computed(() => store.getters.getTrainerCards);
+    const trainers = computed(() => store.getters.getUsersByRole("trainer"));
     const scheduleEvents = computed(() => store.getters.getScheduleEvents);
     const loginForm = computed(() => store.getters.getActiveForm);
 

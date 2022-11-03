@@ -17,8 +17,8 @@ const routes = [
     path: "/profile",
     name: "profile",
     component: page("views/profile/MainPage.vue"),
+    redirect: { name: "profile.account" },
     children: [
-      { path: "", redirect: { name: "profile.account" } },
       {
         path: "account",
         name: "profile.account",
