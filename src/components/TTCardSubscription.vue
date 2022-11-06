@@ -61,7 +61,27 @@
     </div>
     <div>
       <div class="subscription-card__sub-date">
-        <p>Начало: {{ currentDate.toLocaleDateString() }}</p>
+        <div>
+          <div
+            class="lf-inputs__wrapper"
+            :class="{ error: v$.subStartDate.$errors.length }"
+          >
+            <span>Начало: </span>
+            <input
+              v-model="state.subStartDate"
+              class="subscription-card__date-input"
+              type="date"
+            />
+            <div
+              class="input-errors"
+              v-for="error of v$.subStartDate.$errors"
+              :key="error.$uid"
+            >
+              <div class="error-msg">{{ error.$message }}</div>
+            </div>
+          </div>
+        </div>
+        <!-- <p>Начало: {{ currentDate.toLocaleDateString() }}</p> -->
         <p>Конец: {{ endDate.toLocaleDateString() }}</p>
       </div>
 
@@ -121,6 +141,7 @@ export default {
     const state = reactive({
       subscriptionDays: 1,
       subscriptionDiscount: 0.05,
+      subStartDate: null,
     });
 
     const computedDiscount = computed(
@@ -140,6 +161,13 @@ export default {
       )
     );
 
+    const maxDateValidator = (value) => {
+      return (
+        new Date(new Date().setDate(new Date().getDate() + 30)) >=
+          new Date(value) && new Date(value) >= new Date()
+      );
+    };
+
     const rules = computed(() => {
       return {
         subscriptionDays: {
@@ -151,6 +179,16 @@ export default {
             "Абонемент не может быть меньше 1 и больше 365 дней",
             between(1, 365)
           ),
+        },
+        subStartDate: {
+          required: helpers.withMessage("Необходимо выбрать дату!", required),
+          maxDateValidator: helpers.withMessage(
+            "Максимально отложить дату можно на 30 дней!",
+            maxDateValidator
+          ),
+          // maxValue: maxValue(
+          //   new Date(new Date().setDate(new Date().getDate() + 30))
+          // ),
         },
       };
     });
@@ -171,11 +209,13 @@ export default {
     };
 
     watch(
-      () => state.subscriptionDays,
+      () => [state.subscriptionDays, state.subStartDate],
       () => {
         checkSubscription();
         endDate.value = new Date(
-          new Date().setDate(new Date().getDate() + state.subscriptionDays)
+          new Date(state.subStartDate).setDate(
+            new Date(state.subStartDate).getDate() + state.subscriptionDays
+          )
         );
       }
     );

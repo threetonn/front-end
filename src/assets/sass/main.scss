@@ -1220,6 +1220,20 @@ $size-600: 600px;
     margin-bottom: 10px;
   }
 
+  &__tabs {
+    margin: 10px 0;
+
+    button {
+      &:first-child {
+        border-radius: 4px 0 0 4px;
+      }
+
+      &:last-child {
+        border-radius: 0 4px 4px 0;
+      }
+    }
+  }
+
   &__subscriptions, &__trainer-cards {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -1354,7 +1368,6 @@ $size-600: 600px;
   overflow: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   &__wrapper {
     width: 100%;
@@ -1504,7 +1517,7 @@ $size-600: 600px;
       }
     }
 
-    .price, .days {
+    .price, .days, .subscription-card__date-input {
       color: #c5ff81;
     }
 
@@ -1541,7 +1554,7 @@ $size-600: 600px;
 
     background-color: #eae2858c;
     border: 1px solid #f7ff81;
-    color: #f4f2a0;
+    color: #fffec0;
 
     &:hover {
       box-shadow: 0 0 6px 1px #f5ff99a0 inset;
@@ -1557,7 +1570,7 @@ $size-600: 600px;
       }
     }
 
-    .price, .days {
+    .price, .days, .subscription-card__date-input {
       color: #f7ff81;
     }
 
@@ -1606,7 +1619,7 @@ $size-600: 600px;
       }
     }
 
-    .price, .days {
+    .price, .days, .subscription-card__date-input {
       color: #c281ff;
     }
 
@@ -1639,6 +1652,27 @@ $size-600: 600px;
   &__sub-date {
     font-size: 0.8rem;
     font-weight: bold;
+  }
+
+  &__date-input {
+    width: 100px;
+    border: none;
+    outline: none;
+    background: none;
+    font-weight: bold;
+
+    &[type="date"] {
+      background-image: url('@/assets/images/icons/calendar.png');
+      background-repeat: no-repeat;
+      background-position: 100% 50%;
+      background-size: contain;
+    }
+    &[type="date"]::-webkit-inner-spin-button {
+      display: none;
+    }
+    &[type="date"]::-webkit-calendar-picker-indicator {
+      opacity: 0;
+    }
   }
 
   &__days-input {
@@ -1816,5 +1850,117 @@ $size-600: 600px;
     transition: all 0.2s;
     visibility: hidden;
     opacity: 0;
+  }
+}
+
+
+.base-inputs {
+  width: 100%;
+  height: 550px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__radio-wrapper {
+    display: flex;
+    align-items: center;
+    .base-inputs__wrapper {
+      margin-bottom: 0;
+    }
+  }
+
+  &__password-inputs {
+    display: flex;
+    width: 100%;
+    .base-inputs__wrapper {
+      margin-right: 5px !important;
+    }
+  }
+
+  &__wrapper {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  &__input-wrapper {
+    display: flex;
+    input {
+      margin-right: 5px;
+    }
+  }
+
+  &__input {
+    width: 100%;
+    height: 40px;
+    background: #ffffff1a;
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    text-decoration: none;
+    outline: none;
+    color: #ceff84;
+    padding: 0 10px;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+
+    &[disabled] {
+      cursor: not-allowed;
+      background: #8282821a;
+      border: 1px solid rgba(141, 141, 141, 0.25);
+
+      &:hover {
+        border: 1px solid rgba(255, 255, 255, 0.25);
+      }
+    }
+
+    &:active,
+    &:focus,
+    &:hover {
+      border: 1px solid rgba(205, 255, 161, 0.4);
+    }
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 150px;
+    padding: 10px 20px;
+    height: 40px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    outline: none;
+    color: #347206;
+
+    background-color: rgba(181, 219, 127, 0.35);
+    border: 1px solid rgba(190, 255, 130, 0.25);
+
+    // box-shadow: 0px 4px 2px 0px #00000033;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    border-radius: 2px;
+
+    &[disabled] {
+      background-color: rgba(128, 128, 128, 0.4) !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    }
+
+    img {
+      width: 24px;
+      height: 24px;
+    }
+
+    @media screen and (max-width: $lg) {
+      font-size: 0.9rem;
+    }
+
+    @media screen and (max-width: $md) {
+      font-size: 0.7rem;
+    }
+
+    &:hover {
+      // background: #ceffbc5b;
+    }
   }
 }
