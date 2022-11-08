@@ -459,8 +459,8 @@ export default {
         isLoading.value = false;
         store.dispatch("hideActiveForm");
       } catch (error) {
-        console.log(error);
-        return (isLoading.value = false);
+        isLoading.value = false;
+        throw new Error(error);
       }
 
       // const sendFormData = async () => {

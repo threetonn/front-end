@@ -38,6 +38,7 @@ import * as vuelidate from "@vuelidate/validators";
 import { $VALIDATORS_MESSAGE } from "@/services/validatorsMessage";
 export default {
   props: {
+    fieldName: String,
     field: String,
     type: String,
     placeholder: String,
@@ -104,15 +105,6 @@ export default {
       };
     });
 
-    // const phoneVal = (str) => {
-    //   console.log(str);
-    //   const regExp =
-    //     // eslint-disable-next-line no-useless-escape
-    //     /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
-    //   const result = regExp.exec(str);
-    //   return result;
-    // };
-
     const v$ = useVuelidate(rules, state);
 
     const checkValidation = () => {
@@ -130,8 +122,7 @@ export default {
 
     const changeData = () => {
       if (!v$.value.$invalid) {
-        console.log("ZBS");
-        console.log(props.callback());
+        props.callback({ [props.fieldName]: state.formField });
       }
     };
 

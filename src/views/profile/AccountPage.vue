@@ -19,23 +19,41 @@
     </div>
     <template v-if="selectedChangeTab">
       <div class="profile-page__inputs">
-        <div class="profile-photo">
-          <label class="profile-photo__label" for="profile-input">
-            <span>Выберите фото</span>
-            <svg
-              width="54"
-              height="46"
-              viewBox="0 0 54 46"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+        <div class="profile-photo-group">
+          <div class="profile-photo">
+            <label
+              :style="`opacity: ${imagePreview ? 0 : 1}`"
+              class="profile-photo__label"
+              for="profile-input"
             >
-              <path
-                d="M49 7.5H40.5L38.475 1.825C38.3351 1.43668 38.0787 1.10101 37.7409 0.86386C37.4031 0.626709 37.0003 0.499636 36.5875 0.500001H17.4125C16.5688 0.500001 15.8125 1.03125 15.5312 1.825L13.5 7.5H5C2.2375 7.5 0 9.7375 0 12.5V41C0 43.7625 2.2375 46 5 46H49C51.7625 46 54 43.7625 54 41V12.5C54 9.7375 51.7625 7.5 49 7.5ZM49.5 41C49.5 41.275 49.275 41.5 49 41.5H5C4.725 41.5 4.5 41.275 4.5 41V12.5C4.5 12.225 4.725 12 5 12H16.6688L17.7375 9.0125L19.1688 5H34.825L36.2562 9.0125L37.325 12H49C49.275 12 49.5 12.225 49.5 12.5V41ZM27 16C21.475 16 17 20.475 17 26C17 31.525 21.475 36 27 36C32.525 36 37 31.525 37 26C37 20.475 32.525 16 27 16ZM27 32C23.6875 32 21 29.3125 21 26C21 22.6875 23.6875 20 27 20C30.3125 20 33 22.6875 33 26C33 29.3125 30.3125 32 27 32Z"
-                fill="black"
-              />
-            </svg>
-          </label>
-          <input id="profile-input" type="file" />
+              <span>Выберите фото</span>
+              <svg
+                width="54"
+                height="46"
+                viewBox="0 0 54 46"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M49 7.5H40.5L38.475 1.825C38.3351 1.43668 38.0787 1.10101 37.7409 0.86386C37.4031 0.626709 37.0003 0.499636 36.5875 0.500001H17.4125C16.5688 0.500001 15.8125 1.03125 15.5312 1.825L13.5 7.5H5C2.2375 7.5 0 9.7375 0 12.5V41C0 43.7625 2.2375 46 5 46H49C51.7625 46 54 43.7625 54 41V12.5C54 9.7375 51.7625 7.5 49 7.5ZM49.5 41C49.5 41.275 49.275 41.5 49 41.5H5C4.725 41.5 4.5 41.275 4.5 41V12.5C4.5 12.225 4.725 12 5 12H16.6688L17.7375 9.0125L19.1688 5H34.825L36.2562 9.0125L37.325 12H49C49.275 12 49.5 12.225 49.5 12.5V41ZM27 16C21.475 16 17 20.475 17 26C17 31.525 21.475 36 27 36C32.525 36 37 31.525 37 26C37 20.475 32.525 16 27 16ZM27 32C23.6875 32 21 29.3125 21 26C21 22.6875 23.6875 20 27 20C30.3125 20 33 22.6875 33 26C33 29.3125 30.3125 32 27 32Z"
+                  fill="black"
+                />
+              </svg>
+            </label>
+            <input @change="onFileChange" id="profile-input" type="file" />
+
+            <img
+              v-if="imagePreview"
+              class="profile-photo__preview"
+              :src="imagePreview"
+            />
+          </div>
+          <p v-if="photoErrorMessage" class="error-msg">
+            {{ photoErrorMessage }}
+          </p>
+          <button @click.prevent="sendImage" class="profile-inputs__button">
+            Сохранить
+          </button>
         </div>
         <div class="profile-inputs">
           <div class="profile-inputs__wrapper">
@@ -62,33 +80,37 @@
           </div>
           <TTElementInput
             :field="user.name"
+            fieldName="name"
             type="text"
             placeholder="Ваше имя"
-            :callback="() => 'yyy'"
+            :callback="(userData) => sendUserData(userData)"
             :rules="[{ name: 'required', params: '' }]"
           ></TTElementInput>
 
           <TTElementInput
             :field="user.surname"
+            fieldName="surname"
             type="text"
             placeholder="Ваша фамилия"
-            :callback="() => 'yyy'"
+            :callback="(userData) => sendUserData(userData)"
             :rules="[{ name: 'required', params: '' }]"
           ></TTElementInput>
 
           <TTElementInput
             :field="user.patronymic"
+            fieldName="patronymic"
             type="text"
             placeholder="Ваше отчество"
-            :callback="() => 'yyy'"
+            :callback="(userData) => sendUserData(userData)"
             :rules="[{ name: 'required', params: '' }]"
           ></TTElementInput>
 
           <TTElementInput
             :field="user.phone"
+            fieldName="phone"
             type="text"
             placeholder="Ваш номер телефона"
-            :callback="() => 'yyy'"
+            :callback="(userData) => sendUserData(userData)"
             :rules="[
               {
                 name: 'customValidator',
@@ -100,102 +122,31 @@
           ></TTElementInput>
 
           <TTElementInputPassword
-            :callback="() => 'pass'"
+            :callback="(userData) => sendUserData(userData)"
+            fieldName="password"
           ></TTElementInputPassword>
 
           <TTElementInputRadio
             :gender="user.gender"
-            :callback="() => 'gender'"
+            fieldName="gender"
+            :callback="(userData) => sendUserData(userData)"
           ></TTElementInputRadio>
-
-          <!-- <div
-            class="profile-inputs__wrapper"
-            :class="{ error: v$.password.$errors.length }"
-          >
-            <input
-              class="profile-inputs__input"
-              type="password"
-              name="signup-password"
-              id="signup-password"
-              placeholder="Новый пароль"
-              v-model="state.password"
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <div class="profile-page-info">
+        <div class="profile-page-info__image-wrapper">
+          <template v-if="user?.image">
+            <img
+              class="profile-page-info__image"
+              :src="user.image"
+              alt="profile-photo"
             />
-
-            <div
-              class="input-errors"
-              v-for="error of v$.password.$errors"
-              :key="error.$uid"
-            >
-              <div class="error-msg">{{ error.$message }}</div>
-            </div>
-          </div>
-          <div
-            class="profile-inputs__wrapper"
-            :class="{ error: v$.repassword.$errors.length }"
-          >
-            <input
-              class="profile-inputs__input"
-              type="password"
-              name="signup-repassword"
-              id="signup-repassword"
-              placeholder="Повторите пароль"
-              v-model="state.repassword"
-            />
-
-            <div
-              class="input-errors"
-              v-for="error of v$.repassword.$errors"
-              :key="error.$uid"
-            >
-              <div class="error-msg">{{ error.$message }}</div>
-            </div>
-          </div> -->
-          <!-- <div
-            class="profile-inputs__wrapper"
-            :class="{ error: v$.gender.$errors.length }"
-          >
-            <div class="gender">
-              <span class="gender__text">Пол:</span>
-              <div class="gender__group">
-                <input
-                  class="gender__input"
-                  type="radio"
-                  id="male"
-                  name="radio-group"
-                  value="male"
-                  v-model="state.gender"
-                />
-                <label for="male">Муж.</label>
-              </div>
-              <div class="gender__group">
-                <input
-                  class="gender__input"
-                  type="radio"
-                  id="female"
-                  name="radio-group"
-                  value="female"
-                  v-model="state.gender"
-                />
-                <label for="female">Жен.</label>
-              </div>
-            </div>
-
-            <div
-              class="input-errors"
-              v-for="error of v$.gender.$errors"
-              :key="error.$uid"
-            >
-              <div class="error-msg">{{ error.$message }}</div>
-            </div>
-          </div> -->
-          <!-- <button
-            class="profile-inputs__button"
-            @click.prevent="changeUserData"
-            :disabled="isLoading"
-            :class="isLoading && 'disabled'"
-          >
-            Изменить
-          </button> -->
+          </template>
+          <template v-else>
+            <div class="no-image">Нет изображения</div>
+          </template>
         </div>
       </div>
     </template>
@@ -224,10 +175,14 @@ export default {
     const store = useStore();
 
     const user = computed(() => store.getters.getUser);
+    const tokens = computed(() => store.getters.getTokens);
 
     const isLoading = ref(false);
     const serverError = ref(null);
     const selectedChangeTab = ref(true);
+    const userImage = ref(null);
+    const imagePreview = ref(null);
+    const photoErrorMessage = ref(null);
 
     const phoneValidator = (str) => {
       const regExp =
@@ -235,6 +190,60 @@ export default {
         /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
       const result = regExp.exec(str);
       return result;
+    };
+
+    const photoValidator = (photo) => {
+      photoErrorMessage.value = null;
+
+      const validators = {
+        maxImageSize: 2048,
+        types: ["jpg", "png", "jpeg"],
+      };
+
+      if (photo.size / 1024 > validators.maxImageSize) {
+        return (photoErrorMessage.value = `Изображение не может быть больше ${(
+          validators.maxImageSize / 1024
+        ).toFixed(2)} Мб`);
+      }
+
+      const validatorsTypesCheck = validators.types.filter(
+        (type) => type === photo.type.split("/")[1]
+      );
+
+      if (!validatorsTypesCheck.length) {
+        return (photoErrorMessage.value =
+          "Данный формат изображения не поддерживается!");
+      }
+
+      return photoErrorMessage.value;
+    };
+
+    const onFileChange = (e) => {
+      userImage.value = e.target.files[0];
+      if (!photoValidator(userImage.value)) {
+        return (imagePreview.value = window.URL.createObjectURL(
+          userImage.value
+        ));
+      }
+    };
+
+    const sendImage = () => {
+      if (userImage.value) {
+        const formData = new FormData();
+        formData.append("image", userImage.value);
+
+        store.dispatch("uploadImage", {
+          formData: formData,
+          access_token: tokens.value.access_token,
+        });
+      }
+    };
+
+    const sendUserData = (userData) => {
+      return store.dispatch("changeUserData", {
+        data: userData,
+        access_token: tokens.value.access_token,
+      });
     };
 
     // const handleClose = () => {
@@ -293,6 +302,12 @@ export default {
       serverError,
       selectedChangeTab,
       phoneValidator,
+      sendImage,
+      userImage,
+      onFileChange,
+      imagePreview,
+      photoErrorMessage,
+      sendUserData,
     };
   },
 };

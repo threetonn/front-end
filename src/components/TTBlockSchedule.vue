@@ -76,9 +76,6 @@ export default {
 
       // Prevent navigating to narrower view (default vue-cal behavior).
       e.stopPropagation();
-
-      console.log(event);
-      console.log(e);
       // console.log(selectedEvent.value);
     };
 

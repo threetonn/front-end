@@ -51,3 +51,30 @@ export const getAccessTokenAPI = async (refresh_token) => {
 
   return response.json();
 };
+
+export const sendUserImageAPI = async (formData, access_token) => {
+  const response = await fetch(`${$SERVICES.API}/profile/add_image`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${access_token}`,
+    },
+    body: formData,
+  });
+
+  return response.json();
+};
+
+export const sendNewUserDataAPI = async (newData, access_token) => {
+  const response = await fetch(`${$SERVICES.API}/profile/edit`, {
+    method: "PUT",
+    headers: {
+      Accept: "*/*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${access_token}`,
+    },
+    body: JSON.stringify(newData),
+  });
+
+  return response.json();
+};

@@ -59,6 +59,7 @@ export default {
   props: {
     gender: String,
     callback: Function,
+    fieldName: String,
   },
   setup(props) {
     const fieldValidated = ref(false);
@@ -91,8 +92,7 @@ export default {
 
     const changeData = () => {
       if (!v$.value.$invalid) {
-        console.log("ZBS");
-        console.log(props.callback());
+        props.callback({ [props.fieldName]: state.gender });
       }
     };
 

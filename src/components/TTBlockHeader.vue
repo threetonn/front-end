@@ -68,17 +68,11 @@ export default {
       return store.getters.getUser;
     });
 
-    const authorization = computed(() => {
-      return store.getters.getAuthorization;
-    });
-    // console.log(user);
-
     return {
       links,
       displaySignInForm,
       displaySignUpForm,
       user,
-      authorization,
     };
   },
 };

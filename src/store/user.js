@@ -1,9 +1,15 @@
-import { getProfileAPI, signInUserAPI, signUpUserAPI } from "@/services/api";
+import {
+  getProfileAPI,
+  signInUserAPI,
+  signUpUserAPI,
+  sendUserImageAPI,
+  sendNewUserDataAPI,
+} from "@/services/api";
 
 export default {
   state: {
-    accessToken: "",
-    refreshToken: "",
+    access_token: "",
+    refresh_token: "",
     authorization: false,
     user: "",
   },
@@ -13,8 +19,8 @@ export default {
     },
     getTokens(state) {
       return {
-        accessToken: state.accessToken,
-        refreshToken: state.refreshToken,
+        access_token: state.access_token,
+        refresh_token: state.refresh_token,
       };
     },
     getUser(state) {
@@ -36,18 +42,29 @@ export default {
       state.authorization = true;
     },
     SIGN_IN_USER(state, user) {
-      state.accessToken = user.access_token;
-      state.refreshToken = user.refresh_token;
+      state.access_token = user.access_token;
+      state.refresh_token = user.refresh_token;
       state.authorization = true;
     },
     LOGOUT_USER(state) {
       state.authorization = false;
       state.user = null;
-      state.refreshToken = null;
-      state.accessToken = null;
+      state.refresh_token = null;
+      state.access_token = null;
     },
   },
   actions: {
+    async changeUserData({ commit }, userData) {
+      const user = await sendNewUserDataAPI(
+        userData.data,
+        userData.access_token
+      );
+      await commit("SIGN_UP_USER", user);
+    },
+    async uploadImage({ commit }, { formData, access_token }) {
+      const user = await sendUserImageAPI(formData, access_token);
+      await commit("SIGN_UP_USER", user);
+    },
     async signUpUser({ dispatch, commit }, userData) {
       const user = await signUpUserAPI(userData);
 
@@ -59,31 +76,30 @@ export default {
         });
       }
     },
-    async signInUser({ dispatch }, userData) {
+    async signInUser({ commit, dispatch }, userData) {
       const user = await signInUserAPI(userData);
 
+      await commit("SIGN_IN_USER", user);
+
       dispatch("setUserWithToken", {
-        accessToken: user.access_token,
-        refreshToken: user.refresh_token,
+        access_token: user.access_token,
+        refresh_token: user.refresh_token,
       });
     },
-    async setUserWithToken({ dispatch, commit }, payload) {
-      await dispatch("logoutUser");
+    async setUserWithToken({ commit }, payload) {
+      // await dispatch("logoutUser");
+      const tokens = {
+        access_token: payload.access_token,
+        refresh_token: payload.refresh_token,
+      };
+      await commit("SIGN_IN_USER", tokens);
 
-      const profile = await getProfileAPI(payload.accessToken);
+      const profile = await getProfileAPI(payload.access_token);
 
       profile?.email && commit("SIGN_UP_USER", profile);
 
-      console.log(profile);
-
       if (profile?.email) {
-        localStorage.setItem(
-          "userLocal",
-          JSON.stringify({
-            accessToken: payload.accessToken,
-            refreshToken: payload.refreshToken,
-          })
-        );
+        localStorage.setItem("userLocal", JSON.stringify(tokens));
       } else {
         localStorage.setItem("userLocal", "");
       }

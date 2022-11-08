@@ -61,6 +61,7 @@ import { required, sameAs, minLength, helpers } from "@vuelidate/validators";
 export default {
   props: {
     callback: Function,
+    fieldName: String,
   },
   setup(props) {
     const fieldValidated = ref(false);
@@ -111,8 +112,7 @@ export default {
 
     const changeData = () => {
       if (!v$.value.$invalid) {
-        console.log("ZBS");
-        console.log(props.callback());
+        props.callback({ [props.fieldName]: state.password });
       }
     };
 

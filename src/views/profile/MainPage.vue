@@ -81,7 +81,10 @@ export default {
       }
     });
 
-    const logout = () => store.dispatch("logoutUser");
+    const logout = async () => {
+      await store.dispatch("logoutUser");
+      router.push("/");
+    };
 
     return {
       tabs,
