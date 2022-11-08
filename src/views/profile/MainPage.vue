@@ -11,7 +11,7 @@
             >
           </li>
           <li class="profile__link">
-            <a>Выйти</a>
+            <a @click="logout">Выйти</a>
           </li>
         </ul>
       </div>
@@ -26,8 +26,9 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import TTCardUserProfile from "@/components/TTCardUserProfile.vue";
 
 export default {
@@ -72,10 +73,21 @@ export default {
     const showUserCard = computed(() => store.getters.getShowUserCard);
     const selectedUser = computed(() => store.getters.getSelectedUser);
 
+    const router = useRouter();
+
+    onBeforeMount(() => {
+      if (!store.getters.getUser) {
+        router.push("/");
+      }
+    });
+
+    const logout = () => store.dispatch("logoutUser");
+
     return {
       tabs,
       selectedUser,
       showUserCard,
+      logout,
     };
   },
 };

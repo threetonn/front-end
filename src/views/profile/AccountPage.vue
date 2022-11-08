@@ -44,6 +44,7 @@
               type="email"
               name="signup-email"
               id="signup-email"
+              :value="user.email"
               disabled
               placeholder="Ваш Email-адрес"
             />
@@ -52,6 +53,7 @@
             <input
               class="profile-inputs__input"
               type="date"
+              :value="user.birthday"
               name="signup-birthday"
               id="signup-birthday"
               placeholder="Дата рождения"
@@ -59,7 +61,7 @@
             />
           </div>
           <TTElementInput
-            :field="null"
+            :field="user.name"
             type="text"
             placeholder="Ваше имя"
             :callback="() => 'yyy'"
@@ -67,7 +69,7 @@
           ></TTElementInput>
 
           <TTElementInput
-            :field="null"
+            :field="user.surname"
             type="text"
             placeholder="Ваша фамилия"
             :callback="() => 'yyy'"
@@ -75,7 +77,7 @@
           ></TTElementInput>
 
           <TTElementInput
-            :field="null"
+            :field="user.patronymic"
             type="text"
             placeholder="Ваше отчество"
             :callback="() => 'yyy'"
@@ -83,7 +85,7 @@
           ></TTElementInput>
 
           <TTElementInput
-            :field="null"
+            :field="user.phone"
             type="text"
             placeholder="Ваш номер телефона"
             :callback="() => 'yyy'"
@@ -101,7 +103,10 @@
             :callback="() => 'pass'"
           ></TTElementInputPassword>
 
-          <TTElementInputRadio :callback="() => 'gender'"></TTElementInputRadio>
+          <TTElementInputRadio
+            :gender="user.gender"
+            :callback="() => 'gender'"
+          ></TTElementInputRadio>
 
           <!-- <div
             class="profile-inputs__wrapper"
@@ -202,8 +207,8 @@
 <script>
 // import { $SERVICES } from "@/services/api";
 // import { $ERRORS_LIST } from "@/services/errors";
-import { ref } from "vue";
-// import { useStore } from "vuex";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
 
 import TTElementInput from "@/components/TTElementInput.vue";
 import TTElementInputPassword from "@/components/TTElementInputPassword.vue";
@@ -216,7 +221,9 @@ export default {
     TTElementInputRadio,
   },
   setup() {
-    // const store = useStore();
+    const store = useStore();
+
+    const user = computed(() => store.getters.getUser);
 
     const isLoading = ref(false);
     const serverError = ref(null);
@@ -281,6 +288,7 @@ export default {
     // };
 
     return {
+      user,
       isLoading,
       serverError,
       selectedChangeTab,

@@ -18,9 +18,11 @@
         <a href="#timetable" class="header-link">Расписание</a>
         <a href="#trainers" class="header-link">Тренера</a> -->
       </div>
-      <template v-if="user">
+      <template v-if="user?.email">
         <div>
-          <a class="header-link--auth">{{ user.name }}</a>
+          <router-link to="profile" class="header-link--auth">{{
+            user.name
+          }}</router-link>
         </div>
       </template>
       <template v-else>
@@ -39,7 +41,7 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -55,7 +57,20 @@ export default {
       store.dispatch("displayActiveForm", "signup");
     };
 
-    const user = computed(() => store.getters.getUser);
+    onMounted(() => {
+      if (localStorage.getItem("userLocal")) {
+        const userLocal = JSON.parse(localStorage.getItem("userLocal"));
+        store.dispatch("setUserWithToken", userLocal);
+      }
+    });
+
+    const user = computed(() => {
+      return store.getters.getUser;
+    });
+
+    const authorization = computed(() => {
+      return store.getters.getAuthorization;
+    });
     // console.log(user);
 
     return {
@@ -63,6 +78,7 @@ export default {
       displaySignInForm,
       displaySignUpForm,
       user,
+      authorization,
     };
   },
 };

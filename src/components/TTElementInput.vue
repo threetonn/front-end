@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { computed, onMounted, reactive, ref, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import * as vuelidate from "@vuelidate/validators";
 
@@ -47,7 +47,7 @@ export default {
   setup(props) {
     const fieldValidated = ref(false);
     const state = reactive({
-      formField: "",
+      formField: props.field || null,
     });
 
     // eslint-disable-next-line no-unused-vars
@@ -95,8 +95,6 @@ export default {
       }
       return validatorsList;
     };
-
-    onMounted(() => console.log(rules));
 
     const rules = computed(() => {
       return {

@@ -1,4 +1,4 @@
-import { $SERVICES } from "@/services/api";
+import { getProfileAPI, signInUserAPI, signUpUserAPI } from "@/services/api";
 
 export default {
   state: {
@@ -8,6 +8,9 @@ export default {
     user: "",
   },
   getters: {
+    getAuthorization(state) {
+      return state.authorization;
+    },
     getTokens(state) {
       return {
         accessToken: state.accessToken,
@@ -25,36 +28,72 @@ export default {
     },
   },
   mutations: {
-    SET_TOKEN(state, payload) {
-      state.accessToken = payload.access_token;
-      state.refreshToken = payload.refresh_token;
-      state.authorization = true;
-    },
-    SET_USER(state, user) {
-      state.user = user;
-    },
     SET_USER_SUBSCRIPTION(state, id) {
       state.user.subscriptionID = id;
     },
+    SIGN_UP_USER(state, user) {
+      state.user = user;
+      state.authorization = true;
+    },
+    SIGN_IN_USER(state, user) {
+      state.accessToken = user.access_token;
+      state.refreshToken = user.refresh_token;
+      state.authorization = true;
+    },
     LOGOUT_USER(state) {
+      state.authorization = false;
       state.user = null;
       state.refreshToken = null;
       state.accessToken = null;
     },
   },
   actions: {
-    setToken({ commit }, payload) {
-      payload && commit("SET_TOKEN", payload);
+    async signUpUser({ dispatch, commit }, userData) {
+      const user = await signUpUserAPI(userData);
+
+      if (user) {
+        await commit("SIGN_UP_USER", user);
+        dispatch("signInUser", {
+          email: userData.email,
+          password: userData.password,
+        });
+      }
     },
-    setUser({ commit }, user) {
-      user && commit("SET_USER", user);
+    async signInUser({ dispatch }, userData) {
+      const user = await signInUserAPI(userData);
+
+      dispatch("setUserWithToken", {
+        accessToken: user.access_token,
+        refreshToken: user.refresh_token,
+      });
+    },
+    async setUserWithToken({ dispatch, commit }, payload) {
+      await dispatch("logoutUser");
+
+      const profile = await getProfileAPI(payload.accessToken);
+
+      profile?.email && commit("SIGN_UP_USER", profile);
+
+      console.log(profile);
+
+      if (profile?.email) {
+        localStorage.setItem(
+          "userLocal",
+          JSON.stringify({
+            accessToken: payload.accessToken,
+            refreshToken: payload.refreshToken,
+          })
+        );
+      } else {
+        localStorage.setItem("userLocal", "");
+      }
     },
     setUserSubscription({ commit }, id) {
       id && commit("SET_USER_SUBSCRIPTION", id);
     },
-    async logoutUser({ commit, state }) {
+    logoutUser({ commit }) {
       try {
-        await fetch(`${$SERVICES.API}/logout`, state.accessToken);
+        localStorage.setItem("userLocal", "");
 
         commit("LOGOUT_USER");
       } catch (error) {

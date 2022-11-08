@@ -13,6 +13,7 @@
             id="male"
             name="radio-group"
             value="male"
+            :checked="gender === 'male'"
             v-model="state.gender"
           />
           <label for="male">Муж.</label>
@@ -24,6 +25,7 @@
             id="female"
             name="radio-group"
             value="female"
+            :checked="gender === 'female'"
             v-model="state.gender"
           />
           <label for="female">Жен.</label>
@@ -55,12 +57,13 @@ import { useVuelidate } from "@vuelidate/core";
 import { helpers, required } from "@vuelidate/validators";
 export default {
   props: {
+    gender: String,
     callback: Function,
   },
   setup(props) {
     const fieldValidated = ref(false);
     const state = reactive({
-      gender: "",
+      gender: props.gender || null,
     });
 
     const rules = computed(() => {

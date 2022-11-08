@@ -299,7 +299,7 @@
 </template>
 
 <script>
-import { $SERVICES } from "@/services/api";
+// import { $SERVICES } from "@/services/api";
 import { $ERRORS_LIST } from "@/services/errors";
 import { reactive, computed, ref } from "vue";
 import { useStore } from "vuex";
@@ -454,22 +454,31 @@ export default {
         return console.log("Невалидно");
       }
 
-      const sendFormData = async () => {
-        const rawResponse = await fetch(`${$SERVICES.API}/signup`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(state.signup),
-        });
-        const content = await rawResponse.json();
-
-        console.log(content);
+      try {
+        store.dispatch("signUpUser", state.signup);
         isLoading.value = false;
-      };
+        store.dispatch("hideActiveForm");
+      } catch (error) {
+        console.log(error);
+        return (isLoading.value = false);
+      }
 
-      sendFormData();
+      // const sendFormData = async () => {
+      //   const rawResponse = await fetch(`${$SERVICES.API}/auth/signup`, {
+      //     method: "POST",
+      //     headers: {
+      //       Accept: "application/json",
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(state.signup),
+      //   });
+      //   const content = await rawResponse.json();
+
+      //   console.log(content);
+      //   isLoading.value = false;
+      // };
+
+      // sendFormData();
 
       return console.log("Валидно");
     };
@@ -483,51 +492,61 @@ export default {
         isLoading.value = false;
       }
 
-      const sendFormData = async () => {
-        try {
-          const rawResponse = await fetch(`${$SERVICES.API}/signin`, {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(state.signin),
-          });
-          const content = await rawResponse.json();
-          content && store.dispatch("setToken", content);
-          getUser();
-        } catch (error) {
-          isLoading.value = false;
-          serverError.value = $ERRORS_LIST.NOT_CONNECTED;
-          throw new Error(error);
-        }
+      try {
+        store.dispatch("signInUser", state.signin);
+        isLoading.value = false;
+        store.dispatch("hideActiveForm");
+      } catch (error) {
+        isLoading.value = false;
+        serverError.value = $ERRORS_LIST.NOT_CONNECTED;
+        throw new Error(error);
+      }
 
-        const getUser = async () => {
-          try {
-            const tokens = store.getters.getTokens;
-            const rawResponse = await fetch(`${$SERVICES.API}/me`, {
-              method: "GET",
-              headers: {
-                Accept: "*/*",
-                Authorization: `Bearer ${tokens.accessToken}`,
-              },
-            });
-            const content = await rawResponse.json();
+      // const sendFormData = async () => {
+      //   try {
+      //     const rawResponse = await fetch(`${$SERVICES.API}/auth/signin`, {
+      //       method: "POST",
+      //       headers: {
+      //         Accept: "application/json",
+      //         "Content-Type": "application/json",
+      //       },
+      //       body: JSON.stringify(state.signin),
+      //     });
+      //     const content = await rawResponse.json();
+      //     content && store.dispatch("setToken", content);
+      //     getUser();
+      //   } catch (error) {
+      //     isLoading.value = false;
+      //     serverError.value = $ERRORS_LIST.NOT_CONNECTED;
+      //     throw new Error(error);
+      //   }
 
-            content && store.dispatch("setUser", content);
+      // const getUser = async () => {
+      //   try {
+      //     const tokens = store.getters.getTokens;
+      //     const rawResponse = await fetch(`${$SERVICES.API}/me`, {
+      //       method: "GET",
+      //       headers: {
+      //         Accept: "*/*",
+      //         Authorization: `Bearer ${tokens.accessToken}`,
+      //       },
+      //     });
+      //     const content = await rawResponse.json();
 
-            store.dispatch("hideActiveForm");
+      //     content && store.dispatch("setUser", content);
 
-            isLoading.value = false;
-          } catch (error) {
-            isLoading.value = false;
-            serverError.value = $ERRORS_LIST.NOT_USER_FIND;
-            throw new Error(error);
-          }
-        };
-      };
+      //     store.dispatch("hideActiveForm");
 
-      sendFormData();
+      //     isLoading.value = false;
+      //   } catch (error) {
+      //     isLoading.value = false;
+      //     serverError.value = $ERRORS_LIST.NOT_USER_FIND;
+      //     throw new Error(error);
+      //   }
+      // };
+      // };
+
+      // sendFormData();
     };
 
     // console.log(v$.value);
