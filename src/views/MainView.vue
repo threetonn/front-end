@@ -15,11 +15,16 @@
     </div>
     <TTBlockTitle hashLink="trainers" titleName="Наши тренера"></TTBlockTitle>
     <div class="block-3">
-      <TTCardTrainer
-        v-for="trainer in trainers"
-        :key="trainer.id"
-        :trainer="trainer"
-      ></TTCardTrainer>
+      <carousel :itemsToShow="2.5" :wrapAround="true" :transition="500">
+        <slide v-for="trainer in trainers" :key="trainer.id">
+          <TTCardTrainer :trainer="trainer"></TTCardTrainer>
+        </slide>
+
+        <template #addons>
+          <navigation />
+          <pagination />
+        </template>
+      </carousel>
     </div>
     <TTBlockTitle
       hashLink="timetable"
@@ -49,6 +54,8 @@ import TTLoginForm from "@/components/TTLoginForm.vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
 
+import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+
 export default {
   components: {
     TTBlockHeader,
@@ -59,6 +66,10 @@ export default {
     TTCardProgram,
     TTCardTrainer,
     TTLoginForm,
+    Carousel,
+    Slide,
+    Pagination,
+    Navigation,
   },
   setup() {
     const store = useStore();

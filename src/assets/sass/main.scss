@@ -492,10 +492,10 @@ $size-600: 600px;
 .block-3 {
   width: 100%;
   // max-height: 1000px;
-  padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  // padding: 20px;
+  // display: flex;
+  // flex-wrap: wrap;
+  // justify-content: space-between;
   // background-color: $block-bg-color;
   // overflow: hidden;
   // overflow-y: visible;
@@ -508,25 +508,33 @@ $size-600: 600px;
     bottom: 0;
     left: 0;
     z-index: 0;
-    width: 30%;
-    height: 60%;
+    width: 50%;
+    height: 90%;
     background-image: url('@/assets/images/card-bg4.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    background-color: #91f74e;
+    background-color: #6a4ef7;
     // background-color: rgb(172, 212, 112);
     box-shadow: 0 0 6px 3px #232323;
-    border-radius: 10px;
+    border-radius: 0 6px 0 0;
+    z-index: -1;
   }
 
   &--card {
-    width: 45%;
+    width: 100%;
+    height: 300px;
     display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin: 5px;
+    justify-content: space-between;
+    border: 1px solid #cd3eff6b;
+    border-radius: 4px;
+    background-color: #9932cc26;
+    margin: 0 5px;
+    // justify-content: center;
+    // align-items: flex-end;
+    // margin: 5px;
     position: relative;
+
 
     // background-color: #25373b;
     // box-shadow: 0 0 6px 2px #202020;
@@ -544,20 +552,22 @@ $size-600: 600px;
       z-index: 10;
 
       img {
-        width: 100%;
+        // width: 100%;
         height: 100%;
       }
     }
 
     .information {
       width: 50%;
-      height: 100%;
+      // height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       // padding: 10px 20px;
-      margin: 0 10px;
-      padding: 10px 0;
+      // margin: 0 10px;
+      background-color: #00000047;
+      border-radius: 0 4px 4px 0;
+      padding: 10px;
       font-size: 1.25vw;
       z-index: 10;
 
@@ -1364,7 +1374,7 @@ $size-600: 600px;
 
 .profile-inputs {
   width: 100%;
-  height: 550px;
+  height: 525px;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -1905,7 +1915,7 @@ $size-600: 600px;
 
   &__input-wrapper {
     display: flex;
-    input {
+    input, textarea {
       margin-right: 5px;
     }
   }
@@ -1922,6 +1932,11 @@ $size-600: 600px;
     padding: 0 10px;
     font-size: 0.8rem;
     letter-spacing: 1px;
+
+    &--textarea {
+      padding: 5px;
+      min-height: 100px;
+    }
 
     &[disabled] {
       cursor: not-allowed;

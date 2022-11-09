@@ -121,6 +121,20 @@
             ]"
           ></TTElementInput>
 
+          <template v-if="user.role !== 'trainer'">
+            <TTElementInputTextarea
+              :field="user.bio"
+              fieldName="bio"
+              type="text"
+              placeholder="Ваша биография"
+              :callback="(userData) => sendUserData(userData)"
+              :rules="[
+                { name: 'required', params: '' },
+                { name: 'maxLength', params: [800] },
+              ]"
+            ></TTElementInputTextarea>
+          </template>
+
           <TTElementInputPassword
             :callback="(userData) => sendUserData(userData)"
             fieldName="password"
@@ -164,12 +178,14 @@ import { useStore } from "vuex";
 import TTElementInput from "@/components/TTElementInput.vue";
 import TTElementInputPassword from "@/components/TTElementInputPassword.vue";
 import TTElementInputRadio from "@/components/TTElementInputRadio.vue";
+import TTElementInputTextarea from "@/components/TTElementInputTextarea.vue";
 
 export default {
   components: {
     TTElementInput,
     TTElementInputPassword,
     TTElementInputRadio,
+    TTElementInputTextarea,
   },
   setup() {
     const store = useStore();

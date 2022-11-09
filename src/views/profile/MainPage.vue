@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { ref, computed, onBeforeMount } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import TTCardUserProfile from "@/components/TTCardUserProfile.vue";
@@ -75,10 +75,10 @@ export default {
 
     const router = useRouter();
 
-    onBeforeMount(() => {
-      if (!store.getters.getUser) {
-        router.push("/");
-      }
+    onMounted(() => {
+      // if (!store.getters.getUser) {
+      //   router.push("/");
+      // }
     });
 
     const logout = async () => {
