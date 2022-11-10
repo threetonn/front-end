@@ -76,9 +76,9 @@ export default {
     const router = useRouter();
 
     onMounted(() => {
-      // if (!store.getters.getUser) {
-      //   router.push("/");
-      // }
+      if (!store.getters.getUser) {
+        router.push("/");
+      }
     });
 
     const logout = async () => {

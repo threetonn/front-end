@@ -4,7 +4,7 @@ import {
   signUpUserAPI,
   sendUserImageAPI,
   sendNewUserDataAPI,
-} from "@/services/api";
+} from "@/api/userAPI";
 
 export default {
   state: {

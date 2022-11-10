@@ -1,5 +1,8 @@
 <template>
-  <router-view />
+  <div>
+    <router-view />
+    <notifications position="bottom right" />
+  </div>
 </template>
 
 <style lang="scss">

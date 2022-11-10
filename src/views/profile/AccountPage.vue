@@ -121,7 +121,7 @@
             ]"
           ></TTElementInput>
 
-          <template v-if="user.role !== 'trainer'">
+          <template v-if="user.role === 'trainer'">
             <TTElementInputTextarea
               :field="user.bio"
               fieldName="bio"
@@ -133,6 +133,16 @@
                 { name: 'maxLength', params: [800] },
               ]"
             ></TTElementInputTextarea>
+
+            <TTElementInputSelect
+              :selected="user.workout_type"
+              fieldName="workout_type"
+              type="text"
+              placeholder="Проводимые тренировки"
+              :callback="(userData) => sendUserData(userData)"
+              :rules="[{ name: 'required', params: '' }]"
+              :options="workoutTypes"
+            ></TTElementInputSelect>
           </template>
 
           <TTElementInputPassword
@@ -162,6 +172,48 @@
             <div class="no-image">Нет изображения</div>
           </template>
         </div>
+        <div class="profile-page-info__content profile-content">
+          <div class="profile-content__group">
+            <span class="group-title">Имя</span>
+            <span>{{ user.name }}</span>
+          </div>
+          <div class="profile-content__group">
+            <span class="group-title">Фамилия</span>
+            <span>{{ user.surname }}</span>
+          </div>
+          <div class="profile-content__group">
+            <span class="group-title">Отчество</span>
+            <span>{{ user.patronymic }}</span>
+          </div>
+          <div class="profile-content__group">
+            <span class="group-title">Email-адрес</span>
+            <span>{{ user.email }}</span>
+          </div>
+          <div class="profile-content__group">
+            <span class="group-title">Номер телефона</span>
+            <span>{{ user.phone }}</span>
+          </div>
+          <div class="profile-content__group">
+            <span class="group-title">Пол</span>
+            <span>{{ user.gender?.ru }}</span>
+          </div>
+          <template v-if="user.role === 'trainer'">
+            <div class="profile-content__group">
+              <span class="group-title">Биография</span>
+              <span>{{ user.bio }}</span>
+            </div>
+            <div class="profile-content__group">
+              <span class="group-title">Проводимые тренировки</span>
+              <ul>
+                <li v-for="(workout, idx) in user.workout_type" :key="idx">
+                  <span>
+                    {{ workout.description }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </template>
+        </div>
       </div>
     </template>
 
@@ -172,13 +224,14 @@
 <script>
 // import { $SERVICES } from "@/services/api";
 // import { $ERRORS_LIST } from "@/services/errors";
-import { computed, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { useStore } from "vuex";
 
 import TTElementInput from "@/components/TTElementInput.vue";
 import TTElementInputPassword from "@/components/TTElementInputPassword.vue";
 import TTElementInputRadio from "@/components/TTElementInputRadio.vue";
 import TTElementInputTextarea from "@/components/TTElementInputTextarea.vue";
+import TTElementInputSelect from "@/components/TTElementInputSelect.vue";
 
 export default {
   components: {
@@ -186,16 +239,24 @@ export default {
     TTElementInputPassword,
     TTElementInputRadio,
     TTElementInputTextarea,
+    TTElementInputSelect,
   },
   setup() {
     const store = useStore();
 
     const user = computed(() => store.getters.getUser);
     const tokens = computed(() => store.getters.getTokens);
+    const workoutTypes = computed(() => store.getters.getWorkoutTypes);
+
+    onBeforeMount(() => {
+      if (!workoutTypes.value.length) {
+        store.dispatch("setWorkoutTypes");
+      }
+    });
 
     const isLoading = ref(false);
     const serverError = ref(null);
-    const selectedChangeTab = ref(true);
+    const selectedChangeTab = ref(false);
     const userImage = ref(null);
     const imagePreview = ref(null);
     const photoErrorMessage = ref(null);
@@ -252,65 +313,21 @@ export default {
           formData: formData,
           access_token: tokens.value.access_token,
         });
+
+        userImage.value = null;
+
+        selectedChangeTab.value = false;
       }
     };
 
-    const sendUserData = (userData) => {
-      return store.dispatch("changeUserData", {
+    const sendUserData = async (userData) => {
+      await store.dispatch("changeUserData", {
         data: userData,
         access_token: tokens.value.access_token,
       });
+
+      selectedChangeTab.value = false;
     };
-
-    // const handleClose = () => {
-    //   clearForm();
-    //   store.dispatch("hideActiveForm");
-    // };
-
-    // const clearForm = () => {
-    //   for (const key in state.value) {
-    //     if (Object.hasOwnProperty.call(state.value, key)) {
-    //       state.value[key] = "";
-    //     }
-    //   }
-    // };
-
-    // const changeUserData = () => {
-    //   serverError.value = null;
-    //   isLoading.value = true;
-    //   v$.value.$touch();
-
-    //   if (v$.value.$errors.length) {
-    //     isLoading.value = false;
-    //     return console.log("Невалидно");
-    //   }
-
-    //   const sendFormData = async () => {
-    //     try {
-    //       const rawResponse = await fetch(`${$SERVICES.API}/signup`, {
-    //         method: "POST",
-    //         headers: {
-    //           Accept: "application/json",
-    //           "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify(state),
-    //       });
-    //       const content = await rawResponse.json();
-
-    //       content && store.dispatch("setUser", content);
-
-    //       isLoading.value = false;
-    //     } catch (error) {
-    //       isLoading.value = false;
-    //       serverError.value = $ERRORS_LIST.NOT_CONNECTED;
-    //       throw new Error(error);
-    //     }
-    //   };
-
-    //   sendFormData();
-
-    //   return console.log("Валидно");
-    // };
 
     return {
       user,
@@ -324,6 +341,7 @@ export default {
       imagePreview,
       photoErrorMessage,
       sendUserData,
+      workoutTypes,
     };
   },
 };

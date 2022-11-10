@@ -13,7 +13,7 @@
             id="male"
             name="radio-group"
             value="male"
-            :checked="gender === 'male'"
+            :checked="state.gender?.en === 'male'"
             v-model="state.gender"
           />
           <label for="male">Муж.</label>
@@ -25,7 +25,7 @@
             id="female"
             name="radio-group"
             value="female"
-            :checked="gender === 'female'"
+            :checked="state.gender?.en === 'female'"
             v-model="state.gender"
           />
           <label for="female">Жен.</label>

@@ -7,6 +7,7 @@ import programs from "./programs";
 import schedule from "./schedule";
 import subscriptions from "./subscriptions";
 import usersList from "./usersList";
+import workout from "./workout";
 
 export default createStore({
   modules: {
@@ -18,5 +19,6 @@ export default createStore({
     schedule,
     subscriptions,
     usersList,
+    workout,
   },
 });

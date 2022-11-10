@@ -41,13 +41,16 @@
 </template>
 
 <script>
-import { computed, onMounted } from "vue";
+import { computed, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 
 export default {
   setup() {
     const store = useStore();
     const links = computed(() => store.getters.getLinks);
+    const user = computed(() => {
+      return store.getters.getUser;
+    });
 
     const displaySignInForm = () => {
       store.dispatch("displayActiveForm", "signin");
@@ -57,15 +60,11 @@ export default {
       store.dispatch("displayActiveForm", "signup");
     };
 
-    onMounted(() => {
-      if (localStorage.getItem("userLocal")) {
+    onBeforeMount(() => {
+      if (!user.value && localStorage.getItem("userLocal")) {
         const userLocal = JSON.parse(localStorage.getItem("userLocal"));
         store.dispatch("setUserWithToken", userLocal);
       }
-    });
-
-    const user = computed(() => {
-      return store.getters.getUser;
     });
 
     return {
