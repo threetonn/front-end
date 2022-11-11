@@ -6,6 +6,8 @@ import {
   sendNewUserDataAPI,
 } from "@/api/userAPI";
 
+// import { client, manager, trainer } from "@/utils/testUser";
+
 export default {
   state: {
     access_token: "",
@@ -30,12 +32,12 @@ export default {
       return state.user.workouts;
     },
     getUserSubscriptionID(state) {
-      return state.user.subscriptionID;
+      return state.user.subscription;
     },
   },
   mutations: {
     SET_USER_SUBSCRIPTION(state, id) {
-      state.user.subscriptionID = id;
+      state.user.subscription = id;
     },
     SIGN_UP_USER(state, user) {
       state.user = user;

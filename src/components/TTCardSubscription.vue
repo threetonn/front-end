@@ -120,24 +120,15 @@
 <script>
 // import { $SERVICES } from "@/services/api";
 import { computed, ref, watch, reactive } from "vue";
-import { useStore } from "vuex";
 import { getNoun } from "@/services/noun.js";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, required, between } from "@vuelidate/validators";
 export default {
   props: {
     subscription: Object,
+    callback: Function,
   },
-  setup() {
-    const store = useStore();
-
-    const subscriptionsCards = computed(
-      () => store.getters.getSubscriptionCards
-    );
-    const userSubscription = computed(
-      () => store.getters.getUserSubscriptionID
-    );
-
+  setup(props) {
     const state = reactive({
       subscriptionDays: 1,
       subscriptionDiscount: 0.05,
@@ -220,42 +211,24 @@ export default {
       }
     );
 
+    const activateSubscription = (id) => {
+      props.callback(id);
+    };
+
     // const filterSubscriptions = subscriptionsCards.value.filter(
     //   (card) => card.price > userSubscription.value.price
     // );
 
-    const activateSubscription = (id) => {
-      const selectedSubscription = subscriptionsCards.value.find(
-        (card) => card.id === id
-      );
-
-      const currentUserSubscription = subscriptionsCards.value.find(
-        (card) => card.id === userSubscription.value
-      );
-
-      if (selectedSubscription.price > currentUserSubscription.price) {
-        try {
-          store.dispatch("setUserSubscription");
-          console.log("Подписка обновлена");
-        } catch (error) {
-          console.log("Ошибка обновления подписки");
-          throw new Error(error);
-        }
-      } else {
-        console.log("У вас уже имеется более лучшая подписка!");
-      }
-    };
-
     return {
       state,
       v$,
-      activateSubscription,
       getNoun,
       currentDate,
       endDate,
       isValid,
       subscriptioDiscountCalculation,
       computedDiscount,
+      activateSubscription,
     };
   },
 };

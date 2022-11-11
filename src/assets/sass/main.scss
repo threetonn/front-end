@@ -4,6 +4,8 @@ $size-1300: 1300px;
 $size-850: 850px;
 $size-600: 600px;
 
+$medium-bold: 500;
+
 .main {
   position: relative;
 }
@@ -34,7 +36,7 @@ $size-600: 600px;
       &--logo {
         font-size: $link-fontsize;
         letter-spacing: 3px;
-        font-weight: bold;
+        font-weight: $medium-bold;
         color: $green-color;
       }
     }
@@ -118,7 +120,7 @@ $size-600: 600px;
 
     &__title {
       font-size: 1.5rem;
-      font-weight: bold;
+      font-weight: $medium-bold;
       color: #ceff84;
 
       @media screen and (max-width: $lg) {
@@ -165,7 +167,7 @@ $size-600: 600px;
         padding: 10px 20px;
         height: 40px;
         font-size: 0.8rem;
-        font-weight: bold;
+        font-weight: $medium-bold;
         background: rgb(160, 230, 135);
         color: #347206;
         border: 1px solid #daffa3;
@@ -199,7 +201,7 @@ $size-600: 600px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-weight: bold;
+  font-weight: $medium-bold;
   background-color: #211c39;
 
   &--title {
@@ -233,7 +235,7 @@ $size-600: 600px;
   // background-color: #1a033b;
   // background-color: #73ca70;
   // background-blend-mode: difference;
-  font-weight: bold;
+  font-weight: $medium-bold;
 
   &--bg {
     position: absolute;
@@ -312,7 +314,7 @@ $size-600: 600px;
     .logo-text {
       &--3tonn {
         letter-spacing: 3px;
-        font-weight: bold;
+        font-weight: $medium-bold;
         text-transform: capitalize;
         color: #83ff7f;
         text-shadow: 0 0 6px rgb(23 88 0);
@@ -326,7 +328,7 @@ $size-600: 600px;
       width: 200px;
       height: 50px;
       font-size: 1rem;
-      font-weight: bold;
+      font-weight: $medium-bold;
       outline: none;
       background: #a5ff85;
       color: #004b4f;
@@ -458,7 +460,7 @@ $size-600: 600px;
       font-size: 2vw;
       text-transform: uppercase;
       margin-top: -50px;
-      font-weight: bold;
+      font-weight: $medium-bold;
       color: $green-color;
       // margin-bottom: 350px;
     }
@@ -476,7 +478,7 @@ $size-600: 600px;
       background: #a5ff85;
       color: #004b4f;
       border: 1px solid #000000;
-      font-weight: bold;
+      font-weight: $medium-bold;
 
       &:hover {
         transform: scale(0.95);
@@ -578,7 +580,7 @@ $size-600: 600px;
       // margin-top: 30px;
       &--trainerName {
         font-size: 2vw;
-        font-weight: bold;
+        font-weight: $medium-bold;
 
         @media screen and (max-width: $md) {
           font-size: 3vw;
@@ -587,7 +589,7 @@ $size-600: 600px;
 
       &--trainingType {
         font-size: 1.25vw;
-        font-weight: bold;
+        font-weight: $medium-bold;
         color: $green-color;
 
         @media screen and (max-width: $md) {
@@ -672,7 +674,7 @@ $size-600: 600px;
       }
 
       &--title {
-        font-weight: bold;
+        font-weight: $medium-bold;
         font-size: 24px;
         color: white;
         letter-spacing: 1px;
@@ -1071,7 +1073,7 @@ $size-600: 600px;
     }
 
     color: #ffffff;
-    font-weight: bold;
+    font-weight: $medium-bold;
     background: #046700bf;
   }
 }
@@ -1209,7 +1211,7 @@ $size-600: 600px;
     }
     &--active {
       color: white !important;
-      font-weight: bold;
+      font-weight: $medium-bold;
       border-left: 2px solid $green-color !important;
       background: linear-gradient(270deg, rgba(255,255,255,0) 25%, rgba(172, 255, 46, 0.5) 100%);
     }
@@ -1332,7 +1334,7 @@ $size-600: 600px;
       background-color: #932fdc;
 
       span {
-        font-weight: bold;
+        font-weight: $medium-bold;
         font-size: 1rem;
       }
     }
@@ -1419,7 +1421,7 @@ $size-600: 600px;
     padding: 10px 20px;
     height: 40px;
     font-size: 0.8rem;
-    font-weight: bold;
+    font-weight: $medium-bold;
     background: rgb(160, 230, 135);
     color: #347206;
     border: 1px solid #daffa3;
@@ -1502,7 +1504,7 @@ $size-600: 600px;
       padding: 10px;
       font-size: 0.8rem;
       color: #989898;
-      font-weight: bold;
+      font-weight: $medium-bold;
     }
   }
 }
@@ -1516,7 +1518,7 @@ $size-600: 600px;
   border-radius: 6px;
   padding: 10px;
   background-color: #6e667f;
-  font-weight: bold;
+  font-weight: $medium-bold;
   justify-content: space-between;
   transition: all 0.3s;
 
@@ -1681,7 +1683,7 @@ $size-600: 600px;
 
   &__sub-date {
     font-size: 0.8rem;
-    font-weight: bold;
+    font-weight: $medium-bold;
   }
 
   &__date-input {
@@ -1689,7 +1691,7 @@ $size-600: 600px;
     border: none;
     outline: none;
     background: none;
-    font-weight: bold;
+    font-weight: $medium-bold;
 
     &[type="date"] {
       background-image: url('@/assets/images/icons/calendar.png');
@@ -1711,7 +1713,7 @@ $size-600: 600px;
     color: aliceblue;
     border: 1px solid rgba(240, 248, 255, 0.59);
     background-color: #f0f8ff4f;
-    font-weight: bold;
+    font-weight: $medium-bold;
     border-radius: 4px;
     margin: 10px 0;
     outline: none;
@@ -1805,7 +1807,7 @@ $size-600: 600px;
     border: none;
     background-color: #2c2c2c;
     color: white;
-    font-weight: bold;
+    font-weight: $medium-bold;
     font-size: 0.8rem;
     padding: 15px 10px;
     border-radius: 4px;
@@ -1845,7 +1847,7 @@ $size-600: 600px;
   &__title {
     text-align: center;
     color: #b4e688;
-    font-weight: bold;
+    font-weight: $medium-bold;
     font-size: 1.2rem;
   }
 
@@ -1860,7 +1862,7 @@ $size-600: 600px;
 
   &__about-title {
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: $medium-bold;
     color: $green-color;
   }
 
@@ -1876,7 +1878,7 @@ $size-600: 600px;
     border-radius: 0 0 4px 4px;
     background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #a8e688 100%);
     font-size: 1.5rem;
-    font-weight: bold;
+    font-weight: $medium-bold;
     transition: all 0.2s;
     visibility: hidden;
     opacity: 0;
@@ -1995,7 +1997,7 @@ $size-600: 600px;
     padding: 10px 20px;
     height: 40px;
     font-size: 0.8rem;
-    font-weight: bold;
+    font-weight: $medium-bold;
     outline: none;
     color: #347206;
 
@@ -2063,7 +2065,7 @@ $size-600: 600px;
 
       .group-title {
         color: $green-color;
-        font-weight: bold;
+        font-weight: $medium-bold;
         font-size: 0.7rem;
       }
 
@@ -2076,4 +2078,16 @@ $size-600: 600px;
 
 .profile-page-info__image-wrapper {
   display: flex;
+}
+
+.profile-subscription {
+  &--basic {
+    background-color: slategray !important;
+  }
+  &--extended {
+    background-color: seagreen !important;
+  }
+  &--extended-plus {
+    background-color: darkslateblue !important;
+  }
 }

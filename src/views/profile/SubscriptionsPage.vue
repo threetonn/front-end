@@ -6,6 +6,7 @@
         v-for="subscription in subscriptionsCards"
         :key="subscription.id"
         :subscription="subscription"
+        :callback="(id) => activateSubscription(id)"
       ></TTCardSubscription>
     </div>
   </div>
@@ -27,9 +28,40 @@ export default {
     const subscriptionsCards = computed(
       () => store.getters.getSubscriptionCards
     );
+    const userSubscription = computed(
+      () => store.getters.getUserSubscriptionID
+    );
+
+    const activateSubscription = (id) => {
+      // console.log(id);
+      const selectedSubscription = subscriptionsCards.value.find(
+        (card) => card.id === id
+      );
+
+      console.log("выбрано: ", selectedSubscription);
+
+      const currentUserSubscription = subscriptionsCards.value.find(
+        (card) => card.id === userSubscription.value
+      );
+
+      console.log("текущая подписка: ", currentUserSubscription);
+
+      try {
+        if (selectedSubscription.price > currentUserSubscription.price) {
+          store.dispatch("setUserSubscription");
+          console.log("Подписка обновлена");
+        } else {
+          console.log("У вас уже имеется более лучшая подписка!");
+        }
+      } catch (error) {
+        console.log("Ошибка обновления подписки");
+        throw new Error(error);
+      }
+    };
 
     return {
       subscriptionsCards,
+      activateSubscription,
     };
   },
 };

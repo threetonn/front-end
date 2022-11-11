@@ -1,3 +1,5 @@
+import { getSubscriptionsAPI } from "@/api/subscriptionAPI";
+
 export default {
   state: {
     subscriptionCards: [
@@ -16,7 +18,7 @@ export default {
         list: ["Бассейн", "Спа", "Ванна", "Телевизор", "Спортивное питание"],
       },
       {
-        id: 2,
+        id: 3,
         type: "extended-plus",
         title: "Расширенный Плюс",
         price: 100,
@@ -37,6 +39,15 @@ export default {
       return state.subscriptionCards;
     },
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    SET_SUBSCRIPTIONS(state, subscriptions) {
+      state.subscriptionCards = subscriptions;
+    },
+  },
+  actions: {
+    async getSubscriptionsList({ commit }) {
+      const subscriptions = await getSubscriptionsAPI();
+      subscriptions && commit("SET_SUBSCRIPTIONS", subscriptions);
+    },
+  },
 };

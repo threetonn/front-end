@@ -19,7 +19,7 @@ $md: 700px;
 $sm: 500px;
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap');
 
 // CUSTOM USER STYLES & IMPORTS
 ::-webkit-scrollbar {
@@ -44,7 +44,7 @@ html, body {
 
 body {
   margin: 0 auto;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: $text-fontsize;
   min-width: 550px;
   position: relative;
@@ -60,7 +60,7 @@ a {
 }
 
 button {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: $text-fontsize;
   &:hover {
     cursor: pointer;
@@ -68,7 +68,7 @@ button {
 }
 
 input, textarea {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Rubik', sans-serif;
 }
 
 #app {

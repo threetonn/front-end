@@ -173,6 +173,17 @@
           </template>
         </div>
         <div class="profile-page-info__content profile-content">
+          <template v-if="user.role === 'client'">
+            <div
+              class="profile-content__group"
+              :class="`profile-subscription profile-subscription--${user.subscription.type}`"
+            >
+              <span class="group-title">Активная подписка</span>
+              <span>{{
+                user.subscription ? user.subscription.title : "нет"
+              }}</span>
+            </div>
+          </template>
           <div class="profile-content__group">
             <span class="group-title">Имя</span>
             <span>{{ user.name }}</span>
