@@ -1,9 +1,8 @@
+/* eslint-disable no-unused-vars */
 import { createRouter, createWebHistory } from "vue-router";
 
-// import role from "../middleware/role";
-// meta: {
-//   middleware: role,
-// },
+// import client from "@/middleware/client";
+import checkUser from "@/middleware/checkUser.js";
 
 const page = (path) => () => import(`@/${path}`).then((m) => m.default || m);
 
@@ -23,6 +22,9 @@ const routes = [
         path: "account",
         name: "profile.account",
         component: page("views/profile/AccountPage.vue"),
+        // meta: {
+        //   middleware: checkUser,
+        // },
       },
       {
         path: "schedule",

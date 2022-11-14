@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   getProfileAPI,
   signInUserAPI,
@@ -6,14 +7,14 @@ import {
   sendNewUserDataAPI,
 } from "@/api/userAPI";
 
-// import { client, manager, trainer } from "@/utils/testUser";
+import { client, manager, trainer } from "@/utils/testUser";
 
 export default {
   state: {
     access_token: "",
     refresh_token: "",
     authorization: false,
-    user: "",
+    user: client,
   },
   getters: {
     getAuthorization(state) {
@@ -31,13 +32,13 @@ export default {
     getPersonalScheduleEvents(state) {
       return state.user.workouts;
     },
-    getUserSubscriptionID(state) {
+    getUserSubscription(state) {
       return state.user.subscription;
     },
   },
   mutations: {
-    SET_USER_SUBSCRIPTION(state, id) {
-      state.user.subscription = id;
+    SET_USER_SUBSCRIPTION(state, subscription) {
+      state.user.subscription = subscription;
     },
     SIGN_UP_USER(state, user) {
       state.user = user;
@@ -106,8 +107,8 @@ export default {
         localStorage.setItem("userLocal", "");
       }
     },
-    setUserSubscription({ commit }, id) {
-      id && commit("SET_USER_SUBSCRIPTION", id);
+    setUserSubscription({ commit }, subscription) {
+      subscription && commit("SET_USER_SUBSCRIPTION", subscription);
     },
     logoutUser({ commit }) {
       try {

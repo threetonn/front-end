@@ -17,6 +17,7 @@ import TTCardSubscription from "@/components/TTCardSubscription.vue";
 
 import { computed } from "vue";
 import { useStore } from "vuex";
+import { errorNotify, successNotify } from "@/services/notifications";
 
 export default {
   components: {
@@ -28,9 +29,7 @@ export default {
     const subscriptionsCards = computed(
       () => store.getters.getSubscriptionCards
     );
-    const userSubscription = computed(
-      () => store.getters.getUserSubscriptionID
-    );
+    const userSubscription = computed(() => store.getters.getUserSubscription);
 
     const activateSubscription = (id) => {
       // console.log(id);
@@ -40,21 +39,20 @@ export default {
 
       console.log("выбрано: ", selectedSubscription);
 
-      const currentUserSubscription = subscriptionsCards.value.find(
-        (card) => card.id === userSubscription.value
-      );
-
-      console.log("текущая подписка: ", currentUserSubscription);
+      console.log("текущая подписка: ", userSubscription);
 
       try {
-        if (selectedSubscription.price > currentUserSubscription.price) {
-          store.dispatch("setUserSubscription");
-          console.log("Подписка обновлена");
+        if (selectedSubscription.price > userSubscription.value.price) {
+          store.dispatch("setUserSubscription", selectedSubscription);
+          // console.log("Подписка обновлена");
+          successNotify("Абонемент обновлен");
         } else {
-          console.log("У вас уже имеется более лучшая подписка!");
+          errorNotify("У вас уже имеется более лучший абонемент!");
+          // console.log("У вас уже имеется более лучшая подписка!");
         }
       } catch (error) {
-        console.log("Ошибка обновления подписки");
+        errorNotify("Ошибка обновления абонемента!");
+        // console.log("Ошибка обновления подписки");
         throw new Error(error);
       }
     };

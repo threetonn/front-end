@@ -1826,8 +1826,8 @@ $medium-bold: 500;
   align-items: center;
   // justify-content: space-between;
   width: 100%;
-  border: 1px solid #acffab33;
-  background-color: #d2ffc326;
+  // border: 1px solid #acffab33;
+  // background-color: #d2ffc326;
   border-radius: 4px;
   padding: 10px 10px 50px 10px;
   // margin: 5px 5px 10px 5px;
@@ -2082,12 +2082,132 @@ $medium-bold: 500;
 
 .profile-subscription {
   &--basic {
-    background-color: slategray !important;
+    background-color: rgb(129 210 144 / 36%) !important;
+    border: 1px solid rgb(176 253 184 / 59%) !important;
+    color: #deffdf !important;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    .group-title {
+      color: #bbffcf !important;
+    }
   }
   &--extended {
-    background-color: seagreen !important;
+    background-color: rgb(147 143 122 / 51%) !important;
+    border: 1px solid rgb(244 231 148 / 59%) !important;
+    color: #fff8bf !important;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    .group-title {
+      color: #fff778 !important;
+    }
   }
   &--extended-plus {
-    background-color: darkslateblue !important;
+    background-color: rgb(95 82 121 / 51%) !important;
+    border: 1px solid rgb(198 148 244 / 59%) !important;
+    color: #f1dbff !important;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    .group-title {
+      color: #e5b2ff !important;
+    }
+  }
+}
+
+.user-profile-card {
+  position: relative;
+  display: flex;
+  // border: 1px solid #3e3e3e;
+  // background-color: #2b2b2b;
+  // background-color: rgb(43 39 70);
+  border: 1px solid rgb(193 157 255 / 26%);
+  background-color: rgb(39 37 51);
+  border-radius: 4px;
+  padding: 20px;
+  font-size: 0.9rem;
+
+  .close-svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    margin: 8px;
+    cursor: pointer;
+    * {
+      stroke: rgb(190, 190, 190);
+    }
+  }
+
+
+  &--wrapper {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(21 21 21 / 75%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &--text-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2px 0;
+    min-width: 200px;
+    // background-color: #262626;
+    // border: 1px solid #3b3b3b;
+    // border-radius: 4px;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  &--span-block {
+    color: $green-color;
+    font-weight: bold;
+  }
+
+  &--bio-block {
+    overflow: auto;
+    max-height: 200px;
+  }
+
+  &__info {
+    margin-right: 10px;
+  }
+
+  &__bio, &__workouts, &__content {
+    margin: 10px 0;
+  }
+
+  &__image {
+    width: 200px;
+    height: 200px;
+    background-color: #0000002e;
+    border: 1px solid rgb(39 39 39);
+    border-radius: 6px;
+    margin-top: 10px;
+    padding: 10px 10px 0 10px;
+  }
+
+  &__about-user {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  &__content {
+    max-width: 400px;
+    background-color: #0000002e;
+    border: 1px solid rgb(39 39 39);
+    border-radius: 6px;
+    padding: 10px;
   }
 }

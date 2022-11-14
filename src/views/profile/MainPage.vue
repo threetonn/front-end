@@ -17,7 +17,10 @@
       </div>
       <div class="profile__content">
         <template v-if="showUserCard">
-          <TTCardUserProfile :user="selectedUser"></TTCardUserProfile>
+          <TTCardUserProfile
+            :close="closeUserCard"
+            :user="selectedUser"
+          ></TTCardUserProfile>
         </template>
         <router-view></router-view>
       </div>
@@ -26,7 +29,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import TTCardUserProfile from "@/components/TTCardUserProfile.vue";
@@ -75,11 +78,13 @@ export default {
 
     const router = useRouter();
 
-    onMounted(() => {
-      if (!store.getters.getUser) {
-        router.push("/");
-      }
-    });
+    // onMounted(() => {
+    //   if (!store.getters.getUser) {
+    //     router.push("/");
+    //   }
+    // });
+
+    const closeUserCard = () => store.dispatch("hideUserCard");
 
     const logout = async () => {
       await store.dispatch("logoutUser");
@@ -91,6 +96,7 @@ export default {
       selectedUser,
       showUserCard,
       logout,
+      closeUserCard,
     };
   },
 };

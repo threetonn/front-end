@@ -212,7 +212,8 @@ export default {
     );
 
     const activateSubscription = (id) => {
-      props.callback(id);
+      checkSubscription();
+      !isValid.value && props.callback(id);
     };
 
     // const filterSubscriptions = subscriptionsCards.value.filter(
