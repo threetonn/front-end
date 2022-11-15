@@ -33,6 +33,18 @@ export default {
       return state.scheduleEvents;
     },
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    ADD_TRAIN_IN_SCHEDULE(state, train) {
+      state.scheduleEvents.push({
+        start: train.trainStart,
+        end: train.trainEnd,
+        title: train.trainName,
+      });
+    },
+  },
+  actions: {
+    addTrainInSchedule({ commit }, train) {
+      commit("ADD_TRAIN_IN_SCHEDULE", train);
+    },
+  },
 };

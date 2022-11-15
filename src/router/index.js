@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { createRouter, createWebHistory } from "vue-router";
 
-// import client from "@/middleware/client";
+import client from "@/middleware/client";
 import checkUser from "@/middleware/checkUser.js";
 
 const page = (path) => () => import(`@/${path}`).then((m) => m.default || m);
