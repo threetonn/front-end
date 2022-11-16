@@ -29,7 +29,6 @@
           }}</strong>
         </div>
         <div class="card__content">
-          <p class="card__text" v-html="selectedEvent.contentFull" />
           <div class="card__detail">
             <strong>Детали тренировки:</strong>
             <ul>
@@ -42,6 +41,26 @@
                 {{ selectedEvent.end && selectedEvent.end.formatTime() }}
               </li>
             </ul>
+          </div>
+          <div class="card__buttons">
+            <button
+              class="card__btn card__btn--signUp"
+              @click="signUpTrain(selectedEvent.id)"
+            >
+              Записаться
+            </button>
+            <button
+              class="card__btn card__btn--edit"
+              @click="editTrain(selectedEvent.id)"
+            >
+              Изменить
+            </button>
+            <button
+              class="card__btn card__btn--delete"
+              @click="deleteTrain(selectedEvent.id)"
+            >
+              Удалить
+            </button>
           </div>
         </div>
       </div>
@@ -61,8 +80,11 @@ export default {
   props: {
     events: Object,
     noEventClick: Boolean,
+    signUpTrainCallback: Function,
+    editTrainCallback: Function,
+    deleteTrainCallback: Function,
   },
-  setup() {
+  setup(props) {
     const selectedEvent = ref({});
     const showDialog = ref(false);
 
@@ -79,11 +101,26 @@ export default {
       // console.log(selectedEvent.value);
     };
 
+    const signUpTrain = (eventID) => {
+      props.signUpTrainCallback(eventID);
+    };
+
+    const editTrain = (eventID) => {
+      props.editTrainCallback(eventID);
+    };
+
+    const deleteTrain = (eventID) => {
+      props.deleteTrainCallback(eventID);
+    };
+
     return {
       onEventClick,
       showDialog,
       selectedEvent,
       handleClose,
+      signUpTrain,
+      editTrain,
+      deleteTrain,
     };
   },
 };

@@ -18,8 +18,12 @@
           Личное расписание
         </button>
       </div>
-      <button class="button" @click="isTrainFormActive = !isTrainFormActive">
-        Добавить тренировку
+      <button
+        class="button"
+        :class="isTrainFormActive && 'button--active'"
+        @click="isTrainFormActive = !isTrainFormActive"
+      >
+        {{ isTrainFormActive ? "Переключить обратно" : "Добавить тренировку" }}
       </button>
     </div>
     <div v-if="isTrainFormActive" class="profile-page__add-train-form">
@@ -72,6 +76,9 @@
         class="lf-inputs__wrapper"
         :class="{ error: v$.trainDuration.$errors.length }"
       >
+        <label class="shedule-label" for="trainDuration"
+          >Длительность тренировки (мин.):
+        </label>
         <input
           class="lf-inputs__input"
           type="number"
@@ -164,6 +171,9 @@
     <TTBlockSchedule
       v-else
       :events="selectedPersonalEvents ? scheduleEvents : scheduleEvents"
+      :signUpTrainCallback="signUpTrain"
+      :editTrainCallback="editTrain"
+      :deleteTrainCallback="deleteTrain"
     ></TTBlockSchedule>
   </div>
 </template>
@@ -182,6 +192,7 @@ export default {
   setup() {
     const store = useStore();
     const scheduleEvents = computed(() => store.getters.getScheduleEvents);
+    const user = computed(() => store.getters.getUser);
     const isTrainFormActive = ref(false);
     const selectedPersonalEvents = ref(false);
     const formIsValid = ref(false);
@@ -325,6 +336,37 @@ export default {
       }
     };
 
+    const signUpTrain = (eventID) => {
+      if (user.value.role === "client") {
+        return console.log(eventID);
+      }
+      return errorNotify("Данное действие доступно только для клиентов!");
+    };
+
+    const editTrain = (eventID) => {
+      if (user.value.role === "trainer") {
+        return console.log(eventID);
+      }
+      if (user.value.role === "manager") {
+        return console.log(eventID);
+      }
+      return errorNotify(
+        "Данное действие доступно только для тренеров и менеджеров!"
+      );
+    };
+
+    const deleteTrain = (eventID) => {
+      if (user.value.role === "trainer") {
+        return console.log(eventID);
+      }
+      if (user.value.role === "manager") {
+        return console.log(eventID);
+      }
+      return errorNotify(
+        "Данное действие доступно только для тренеров и менеджеров!"
+      );
+    };
+
     return {
       v$,
       state,
@@ -332,6 +374,9 @@ export default {
       selectedPersonalEvents,
       isTrainFormActive,
       addTrain,
+      signUpTrain,
+      editTrain,
+      deleteTrain,
       workoutLocations,
       workoutTypes,
       formIsValid,

@@ -14,7 +14,7 @@ export default {
     access_token: "",
     refresh_token: "",
     authorization: false,
-    user: client,
+    user: manager,
   },
   getters: {
     getAuthorization(state) {

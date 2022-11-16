@@ -26,10 +26,45 @@ export default {
         hashLink: "trainers",
       },
     ],
+    routeAccess: [
+      {
+        name: "Профиль",
+        route: "account",
+        access: ["client", "trainer", "manager"],
+      },
+      {
+        name: "Расписание",
+        route: "schedule",
+        access: [],
+      },
+      {
+        name: "Абонементы",
+        route: "subscriptions",
+        access: ["client", "manager"],
+      },
+      {
+        name: "Тренера",
+        route: "trainers",
+        access: ["client", "manager"],
+      },
+      {
+        name: "Персонал",
+        route: "staff",
+        access: ["manager"],
+      },
+      {
+        name: "Клиенты",
+        route: "users",
+        access: ["trainer", "manager"],
+      },
+    ],
   },
   getters: {
     getLinks(state) {
       return state.links;
+    },
+    getRouteAccess(state) {
+      return state.routeAccess;
     },
   },
   mutations: {},

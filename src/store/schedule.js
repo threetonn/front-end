@@ -2,12 +2,14 @@ export default {
   state: {
     scheduleEvents: [
       {
+        id: 1,
         start: "2022-10-18 10:30",
         end: "2022-10-18 14:30",
         title: "Групповая тренировка",
         class: "split1",
       },
       {
+        id: 2,
         start: "2022-10-20 10:30",
         end: "2022-10-20 12:30",
         title: "Йога",
@@ -15,12 +17,14 @@ export default {
         class: "split2",
       },
       {
+        id: 3,
         start: "2022-10-18 15:30",
         end: "2022-10-18 18:30",
         title: "Персональные тренировки",
         class: "split3",
       },
       {
+        id: 4,
         start: "2022-10-19 16:30",
         end: "2022-10-19 20:30",
         title: "Персональные тренировки",
