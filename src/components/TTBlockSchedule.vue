@@ -103,14 +103,17 @@ export default {
 
     const signUpTrain = (eventID) => {
       props.signUpTrainCallback(eventID);
+      handleClose();
     };
 
     const editTrain = (eventID) => {
       props.editTrainCallback(eventID);
+      handleClose();
     };
 
     const deleteTrain = (eventID) => {
       props.deleteTrainCallback(eventID);
+      handleClose();
     };
 
     return {
