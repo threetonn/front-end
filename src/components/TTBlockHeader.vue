@@ -30,10 +30,10 @@
           <a @click="displaySignInForm" class="header-link--auth">Войти</a>
           |
           <a @click="displaySignUpForm" class="header-link--reg">Регистрация</a>
-          |
+          <!-- |
           <router-link to="profile" class="header-link--reg"
             >Профиль</router-link
-          >
+          > -->
         </div>
       </template>
     </header>

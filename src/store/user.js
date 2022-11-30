@@ -7,6 +7,8 @@ import {
   sendNewUserDataAPI,
 } from "@/api/userAPI";
 
+import { setUserSubscriptionAPI } from "@/api/subscriptionAPI";
+
 import { client, manager, trainer } from "@/utils/testUser";
 
 export default {
@@ -14,7 +16,7 @@ export default {
     access_token: "",
     refresh_token: "",
     authorization: false,
-    user: manager,
+    user: "",
   },
   getters: {
     getAuthorization(state) {
@@ -107,7 +109,8 @@ export default {
         localStorage.setItem("userLocal", "");
       }
     },
-    setUserSubscription({ commit }, subscription) {
+    async setUserSubscription({ commit }, subscriptionData) {
+      const subscription = await setUserSubscriptionAPI(subscriptionData);
       subscription && commit("SET_USER_SUBSCRIPTION", subscription);
     },
     logoutUser({ commit }) {

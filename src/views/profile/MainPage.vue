@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import TTCardUserProfile from "@/components/TTCardUserProfile.vue";
@@ -87,6 +87,7 @@ export default {
     const selectedUser = computed(() => store.getters.getSelectedUser);
     const tabs = computed(() => store.getters.getRouteAccess);
     const user = computed(() => store.getters.getUser);
+    const subscriptions = computed(() => store.getters.getSubscriptionCards);
 
     const router = useRouter();
 
@@ -95,6 +96,16 @@ export default {
     //     router.push("/");
     //   }
     // });
+
+    onBeforeMount(() => {
+      if (!user.value && localStorage.getItem("userLocal")) {
+        const userLocal = JSON.parse(localStorage.getItem("userLocal"));
+        store.dispatch("setUserWithToken", userLocal);
+      }
+      if (!subscriptions.value) {
+        store.dispatch("getSubscriptionsList");
+      }
+    });
 
     const closeUserCard = () => store.dispatch("hideUserCard");
 

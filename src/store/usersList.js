@@ -1,7 +1,10 @@
 // import { $SERVICES } from "@/services/api";
 
+import { getTrainersAPI } from "@/api/workoutAPI";
+
 export default {
   state: {
+    trainers: null,
     usersList: [
       {
         id: 1,
@@ -95,6 +98,9 @@ export default {
     getUsersByRole: (state) => (role) => {
       return state.usersList.filter((user) => user.role === role);
     },
+    getTrainers(state) {
+      return state.trainers;
+    },
   },
   mutations: {
     SHOW_USER_CARD(state) {
@@ -106,17 +112,9 @@ export default {
     SELECT_USER(state, user) {
       state.selectedUser = user;
     },
-    // UPDATE_USERS_LIST(state, users) {
-    //   if (Array.isArray(users) && users.length > 0) {
-    //     state.usersList = [...state.usersList, ...users];
-    //     state.usersList = [...new Set(state.usersList.map((user) => user.id))];
-    //   }
-
-    //   if (!Array.isArray(users) && typeof users === "object") {
-    //     !state.usersList.find(users.id) &&
-    //       (state.usersList = [...state.usersList, users]);
-    //   }
-    // },
+    GET_TRAINERS(state, trainers) {
+      state.trainers = trainers;
+    },
   },
   actions: {
     hideUserCard({ commit }) {
@@ -127,6 +125,10 @@ export default {
     },
     selectUser({ commit }, user) {
       commit("SELECT_USER", user);
+    },
+    async getTrainers({ commit }) {
+      const trainers = await getTrainersAPI();
+      trainers && commit("GET_TRAINERS", trainers);
     },
     // updateUsersList({ commit }, users) {
     //   users && commit("UPDATE_USERS_LIST", users);

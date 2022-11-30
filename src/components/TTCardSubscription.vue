@@ -36,7 +36,7 @@
       <ul class="subscription-card__list">
         <li
           class="subscription-card__list-item"
-          v-for="(item, idx) in subscription.list"
+          v-for="(item, idx) in subscription.features"
           :key="idx"
         >
           <svg
@@ -131,12 +131,11 @@ export default {
   setup(props) {
     const state = reactive({
       subscriptionDays: 1,
-      subscriptionDiscount: 0.05,
       subStartDate: null,
     });
 
     const computedDiscount = computed(
-      () => (state.subscriptionDays * state.subscriptionDiscount) / 100
+      () => (state.subscriptionDays * props.subscription.discount) / 100
     );
 
     const subscriptioDiscountCalculation = (sum) => {
@@ -213,7 +212,13 @@ export default {
 
     const activateSubscription = (id) => {
       checkSubscription();
-      !isValid.value && props.callback(id);
+
+      const subscriptionData = {
+        id: id,
+        start_date: state.subStartDate,
+        day_count: state.subscriptionDays,
+      };
+      !isValid.value && props.callback(subscriptionData);
     };
 
     // const filterSubscriptions = subscriptionsCards.value.filter(

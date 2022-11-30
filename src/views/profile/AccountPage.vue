@@ -176,7 +176,9 @@
           <template v-if="user.role === 'client'">
             <div
               class="profile-content__group"
-              :class="`profile-subscription profile-subscription--${user.subscription.type}`"
+              :class="`profile-subscription profile-subscription--${
+                user.subscription && user.subscription.type
+              }`"
             >
               <span class="group-title">Активная подписка</span>
               <span>{{

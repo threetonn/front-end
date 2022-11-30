@@ -19,6 +19,7 @@
         </button>
       </div>
       <button
+        v-if="user.role === 'manager'"
         class="button"
         :class="isTrainFormActive && 'button--active'"
         @click="toggleActiveEventsForm"
@@ -124,6 +125,7 @@ export default {
       toggleActiveEventsForm,
       scheduleSelectedEventID,
       scheduleSelectedEventName,
+      user,
     };
   },
 };
