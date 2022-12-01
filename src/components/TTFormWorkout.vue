@@ -76,6 +76,36 @@
 
     <div
       class="lf-inputs__wrapper"
+      :class="{ error: v$.trainer.$errors.length }"
+    >
+      <div class="shedule-select">
+        <label for="trainer-select">Тренер</label>
+        <div class="custom-select">
+          <select v-model="state.trainer" id="trainer-select">
+            <option disabled value="">Выберите один из вариантов</option>
+            <option
+              v-for="item in trainersList"
+              :selected="item.email === state.trainer"
+              :key="item.email"
+              :value="item.email"
+            >
+              {{ item.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div
+        class="input-errors"
+        v-for="error of v$.trainer.$errors"
+        :key="error.$uid"
+      >
+        <div class="error-msg">{{ error.$message }}</div>
+      </div>
+    </div>
+
+    <div
+      class="lf-inputs__wrapper"
       :class="{ error: v$.trainLocation.$errors.length }"
     >
       <div class="shedule-select">
@@ -85,11 +115,11 @@
             <option disabled value="">Выберите один из вариантов</option>
             <option
               v-for="item in workoutLocations"
-              :selected="item.id === state.trainLocation"
-              :key="item.id"
-              :value="item.id"
+              :selected="item.name === state.trainLocation"
+              :key="item.name"
+              :value="item.name"
             >
-              {{ item.description }}
+              {{ item.address }}
             </option>
           </select>
         </div>
@@ -115,9 +145,9 @@
             <option disabled value="">Выберите один из вариантов</option>
             <option
               v-for="item in workoutTypes"
-              :selected="item.id === state.trainLocation"
-              :key="item.id"
-              :value="item.id"
+              :selected="item.name === state.trainType"
+              :key="item.name"
+              :value="item.name"
             >
               {{ item.description }}
             </option>
@@ -165,6 +195,8 @@ export default {
     const scheduleEvents = computed(() => store.getters.getScheduleEvents);
     const workoutTypes = computed(() => store.getters.getWorkoutTypes);
     const workoutLocations = computed(() => store.getters.getWorkoutLocations);
+    const trainersList = computed(() => store.getters.getTrainers);
+    const tokens = computed(() => store.getters.getTokens);
 
     // const user = computed(() => store.getters.getUser);
     const isTrainFormActive = ref(false);
@@ -206,8 +238,9 @@ export default {
       trainName: props.eventID ? scheduleEventByID.value.title : "",
       trainStart: props.eventID ? scheduleEventByID.value.start : "",
       trainEnd: props.eventID ? scheduleEventByID.value.end : "",
-      trainLocation: props.eventID ? scheduleEventByID.value.location.id : "",
-      trainType: props.eventID ? scheduleEventByID.value.type.id : "",
+      trainLocation: props.eventID ? scheduleEventByID.value.location.name : "",
+      trainType: props.eventID ? scheduleEventByID.value.type : "",
+      trainer: props.eventID ? scheduleEventByID.value.trainer.email : "",
       trainDuration: props.eventID ? calcTrainDuration.value : 0,
     });
 
@@ -279,6 +312,12 @@ export default {
             required
           ),
         },
+        trainer: {
+          required: helpers.withMessage(
+            "Поле обязательно для заполнения",
+            required
+          ),
+        },
       };
     });
 
@@ -303,6 +342,7 @@ export default {
       state.trainEnd = "";
       state.trainLocation = "";
       state.trainType = "";
+      state.trainer = "";
       state.trainDuration = 0;
     };
 
@@ -320,11 +360,22 @@ export default {
     };
 
     const addTrain = () => {
-      state.trainEnd = new Date(endDate.value).toString();
-      state.trainStart = new Date(state.trainStart).toString();
+      state.trainEnd = new Date(endDate.value).toISOString();
+      state.trainStart = new Date(state.trainStart).toISOString();
 
       if (checkValidations()) {
-        store.dispatch("addTrainInSchedule", state);
+        const trainData = {
+          name: state.trainName,
+          start_date: state.trainStart,
+          end_date: state.trainEnd,
+          workout_type: state.trainType,
+          gym: state.trainLocation,
+          trainer: state.trainer,
+        };
+        store.dispatch("addTrainInSchedule", {
+          access_token: tokens.value.access_token,
+          train: trainData,
+        });
         clearForm();
         isTrainFormActive.value = false;
         successNotify("Тренировка добавлена!");
@@ -335,15 +386,23 @@ export default {
     };
 
     const editTrain = () => {
-      state.trainEnd = new Date(endDate.value).toString();
-      state.trainStart = new Date(state.trainStart).toString();
+      state.trainEnd = new Date(endDate.value).toISOString();
+      state.trainStart = new Date(state.trainStart).toISOString();
 
       if (checkValidations()) {
-        const data = {
-          id: props.eventID,
-          train: state,
+        const trainData = {
+          name: state.trainName,
+          start_date: state.trainStart,
+          end_date: state.trainEnd,
+          workout_type: state.trainType,
+          gym: state.trainLocation,
+          trainer: state.trainer,
         };
-        store.dispatch("editTrainInSchedule", data);
+        store.dispatch("editTrainInSchedule", {
+          id: props.eventID,
+          access_token: tokens.value.access_token,
+          train: trainData,
+        });
         clearForm();
         isTrainFormActive.value = false;
         successNotify("Тренировка обновлена!");
@@ -370,6 +429,7 @@ export default {
       onClickScheduleButton,
       workoutLocations,
       workoutTypes,
+      trainersList,
       endDate,
       buttonStyle,
       formIsValid,

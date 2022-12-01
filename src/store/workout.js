@@ -2,16 +2,18 @@ import { getWorkoutTypesAPI, getWorkoutLocationsAPI } from "@/api/workoutAPI";
 
 export default {
   state: {
-    workoutTypes: [
-      { id: 1, description: "Йога" },
-      { id: 2, description: "Чайхана" },
-      { id: 3, description: "Групповая" },
-    ],
-    workoutLocations: [
-      { id: 1, description: "Location1" },
-      { id: 2, description: "Location2" },
-      { id: 3, description: "Location3" },
-    ],
+    // workoutTypes: [
+    //   { id: 1, description: "Йога" },
+    //   { id: 2, description: "Чайхана" },
+    //   { id: 3, description: "Групповая" },
+    // ],
+    // workoutLocations: [
+    //   { id: 1, description: "Location1" },
+    //   { id: 2, description: "Location2" },
+    //   { id: 3, description: "Location3" },
+    // ],
+    workoutTypes: null,
+    workoutLocations: null,
   },
   getters: {
     getWorkoutTypes(state) {
@@ -32,11 +34,15 @@ export default {
   actions: {
     async setWorkoutTypes({ commit }) {
       const workoutTypes = await getWorkoutTypesAPI();
-      workoutTypes && commit("SET_WORKOUT_TYPES", workoutTypes);
+      if (!workoutTypes.error) {
+        workoutTypes && commit("SET_WORKOUT_TYPES", workoutTypes);
+      }
     },
     async setWorkoutLocations({ commit }) {
       const workoutLocations = await getWorkoutLocationsAPI();
-      workoutLocations && commit("SET_WORKOUT_LOCATIONS", workoutLocations);
+      if (!workoutLocations.error) {
+        workoutLocations && commit("SET_WORKOUT_LOCATIONS", workoutLocations);
+      }
     },
   },
 };

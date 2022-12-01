@@ -33,14 +33,9 @@ export default {
     const userSubscription = computed(() => store.getters.getUserSubscription);
 
     const activateSubscription = (subscriptionCard) => {
-      // console.log(id);
-      const selectedSubscription = subscriptionsCards.value.find(
-        (card) => card.id === subscriptionCard.id
-      );
-
-      console.log("выбрано: ", selectedSubscription);
-
-      console.log("текущая подписка: ", userSubscription);
+      // const selectedSubscription = subscriptionsCards.value.find(
+      //   (card) => card.id === subscriptionCard.id
+      // );
 
       try {
         const sendData = {
@@ -49,14 +44,9 @@ export default {
           start_date: subscriptionCard.start_date,
           day_count: subscriptionCard.day_count,
         };
-        console.log(sendData);
         if (userSubscription.value) {
-          if (selectedSubscription.price > userSubscription.value.price) {
-            store.dispatch("setUserSubscription", sendData);
-            successNotify("Абонемент обновлен");
-          } else {
-            errorNotify("У вас уже имеется более лучший абонемент!");
-          }
+          store.dispatch("setUserSubscription", sendData);
+          successNotify("Абонемент обновлен");
         } else {
           store.dispatch("setUserSubscription", sendData);
           successNotify("Абонемент обновлен");
@@ -65,6 +55,29 @@ export default {
         errorNotify("Ошибка обновления абонемента!");
         throw new Error(error);
       }
+
+      // try {
+      //   const sendData = {
+      //     id: subscriptionCard.id,
+      //     access_token: tokens.value.access_token,
+      //     start_date: subscriptionCard.start_date,
+      //     day_count: subscriptionCard.day_count,
+      //   };
+      //   if (userSubscription.value) {
+      //     if (selectedSubscription.price > userSubscription.value.price) {
+      //       store.dispatch("setUserSubscription", sendData);
+      //       successNotify("Абонемент обновлен");
+      //     } else {
+      //       errorNotify("У вас уже имеется более лучший абонемент!");
+      //     }
+      //   } else {
+      //     store.dispatch("setUserSubscription", sendData);
+      //     successNotify("Абонемент обновлен");
+      //   }
+      // } catch (error) {
+      //   errorNotify("Ошибка обновления абонемента!");
+      //   throw new Error(error);
+      // }
     };
 
     return {

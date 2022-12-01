@@ -49,53 +49,18 @@ export default {
     TTCardUserProfile,
   },
   setup() {
-    // const tabs = ref([
-    //   {
-    //     icon: "user",
-    //     name: "Профиль",
-    //     route: "profile.account",
-    //   },
-    //   {
-    //     icon: "user-edit",
-    //     name: "Расписание",
-    //     route: "profile.schedule",
-    //   },
-    //   {
-    //     icon: "user-lock",
-    //     name: "Абонементы",
-    //     route: "profile.subscriptions",
-    //   },
-    //   {
-    //     icon: "ruble-sign",
-    //     name: "Тренера",
-    //     route: "profile.trainers",
-    //   },
-    //   {
-    //     icon: "ruble-sign",
-    //     name: "Персонал",
-    //     route: "profile.staff",
-    //   },
-    //   {
-    //     icon: "hand-holding-usd",
-    //     name: "Клиенты",
-    //     route: "profile.users",
-    //   },
-    // ]);
-
     const store = useStore();
     const showUserCard = computed(() => store.getters.getShowUserCard);
     const selectedUser = computed(() => store.getters.getSelectedUser);
     const tabs = computed(() => store.getters.getRouteAccess);
     const user = computed(() => store.getters.getUser);
     const subscriptions = computed(() => store.getters.getSubscriptionCards);
+    const workoutTypes = computed(() => store.getters.getWorkoutTypes);
+    const workoutLocations = computed(() => store.getters.getWorkoutLocations);
+    const trainers = computed(() => store.getters.getTrainers);
+    const sheduleEvents = computed(() => store.getters.getScheduleEvents);
 
     const router = useRouter();
-
-    // onMounted(() => {
-    //   if (!store.getters.getUser) {
-    //     router.push("/");
-    //   }
-    // });
 
     onBeforeMount(() => {
       if (!user.value && localStorage.getItem("userLocal")) {
@@ -104,6 +69,18 @@ export default {
       }
       if (!subscriptions.value) {
         store.dispatch("getSubscriptionsList");
+      }
+      if (!workoutTypes.value) {
+        store.dispatch("setWorkoutTypes");
+      }
+      if (!workoutLocations.value) {
+        store.dispatch("setWorkoutLocations");
+      }
+      if (!trainers.value) {
+        store.dispatch("getTrainers");
+      }
+      if (!sheduleEvents.value.length > 0) {
+        store.dispatch("getScheduleEvents");
       }
     });
 

@@ -72,9 +72,9 @@ export const getAccessTokenAPI = async (refresh_token) => {
     },
   });
 
-  if (response.status === 200) {
-    successNotify("Успешно!");
-  }
+  // if (response.status === 200) {
+  //   successNotify("Успешно!");
+  // }
 
   if (response.status !== 200) {
     errorNotify("Не удалось соединиться с сервером!");

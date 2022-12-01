@@ -110,8 +110,10 @@ export default {
       }
     },
     async setUserSubscription({ commit }, subscriptionData) {
-      const subscription = await setUserSubscriptionAPI(subscriptionData);
-      subscription && commit("SET_USER_SUBSCRIPTION", subscription);
+      const subData = await setUserSubscriptionAPI(subscriptionData);
+      if (!subData.error) {
+        subData && commit("SET_USER_SUBSCRIPTION", subData);
+      }
     },
     logoutUser({ commit }) {
       try {

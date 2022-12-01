@@ -49,7 +49,7 @@ import TTFormWorkout from "@/components/TTFormWorkout.vue";
 
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
-import { errorNotify, successNotify } from "@/services/notifications";
+import { errorNotify } from "@/services/notifications";
 
 export default {
   components: { TTBlockSchedule, TTFormWorkout },
@@ -66,6 +66,7 @@ export default {
     const isTrainFormActive = computed(
       () => store.getters.getScheduleEventsFormActive
     );
+    const tokens = computed(() => store.getters.getTokens);
 
     const selectedPersonalEvents = ref(false);
     const formIsValid = ref(false);
@@ -101,17 +102,39 @@ export default {
     };
 
     const deleteTrain = (eventID) => {
+      const event = scheduleEvents.value.find((e) => e.id === eventID);
       if (user.value.role === "trainer") {
-        return errorNotify("Данное действие доступно только для менеджеров!");
+        if (
+          event.trainer.email === user.value.email &&
+          event.type === "personal"
+        ) {
+          let isConfirm = confirm("Удалить данную тренировку?");
+          isConfirm &&
+            store.dispatch("deleteTrainInSchedule", {
+              id: eventID,
+              role: user.value.role,
+              access_token: tokens.value.access_token,
+            });
+        } else {
+          return errorNotify("Удалить можно только персональные тренировки!");
+        }
       }
       if (user.value.role === "manager") {
-        let isConfirm = confirm("Удалить данную тренировку?");
-        isConfirm && store.dispatch("deleteTrainInSchedule", eventID);
-        return successNotify("Тренировка удалена!");
+        if (event.type === "group") {
+          let isConfirm = confirm("Удалить данную тренировку?");
+          isConfirm &&
+            store.dispatch("deleteTrainInSchedule", {
+              id: eventID,
+              role: user.value.role,
+              access_token: tokens.value.access_token,
+            });
+        } else {
+          return errorNotify("Удалить можно только групповые тренировки!");
+        }
       }
-      return errorNotify(
-        "Данное действие доступно только для тренеров и менеджеров!"
-      );
+      // return errorNotify(
+      //   "Данное действие доступно только для тренеров и менеджеров!"
+      // );
     };
 
     return {

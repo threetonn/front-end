@@ -177,13 +177,18 @@
             <div
               class="profile-content__group"
               :class="`profile-subscription profile-subscription--${
-                user.subscription && user.subscription.type
+                activeSubscription && activeSubscription.subscription.type
               }`"
             >
               <span class="group-title">Активная подписка</span>
               <span>{{
-                user.subscription ? user.subscription.title : "нет"
+                activeSubscription
+                  ? activeSubscription.subscription.title
+                  : "нет"
               }}</span>
+              <span class="group-text"
+                >Дата окончания: {{ activeSubscription.end_date }}</span
+              >
             </div>
           </template>
           <div class="profile-content__group">
@@ -237,7 +242,7 @@
 <script>
 // import { $SERVICES } from "@/services/api";
 // import { $ERRORS_LIST } from "@/services/errors";
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
 import TTElementInput from "@/components/TTElementInput.vue";
@@ -259,12 +264,8 @@ export default {
 
     const user = computed(() => store.getters.getUser);
     const tokens = computed(() => store.getters.getTokens);
-    const workoutTypes = computed(() => store.getters.getWorkoutTypes);
-
-    onBeforeMount(() => {
-      if (!workoutTypes.value.length) {
-        store.dispatch("setWorkoutTypes");
-      }
+    const activeSubscription = computed(() => {
+      return user.value.subscription.find((sub) => sub.is_acting === false);
     });
 
     const isLoading = ref(false);
@@ -354,7 +355,7 @@ export default {
       imagePreview,
       photoErrorMessage,
       sendUserData,
-      workoutTypes,
+      activeSubscription,
     };
   },
 };

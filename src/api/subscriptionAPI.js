@@ -9,9 +9,9 @@ export const getSubscriptionsAPI = async () => {
     },
   });
 
-  if (response.status === 200) {
-    successNotify("Успешно!");
-  }
+  // if (response.status === 200) {
+  //   successNotify("Успешно!");
+  // }
 
   if (response.status !== 200) {
     errorNotify("Не удалось соединиться с сервером!");
@@ -26,23 +26,22 @@ export const setUserSubscriptionAPI = async (subscribtionData) => {
     {
       method: "POST",
       headers: {
-        Accept: "application/json",
+        Accept: "*/*",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${subscribtionData.access_token}`,
       },
-      body: JSON.stringify({
-        start_date: subscribtionData.start_date,
-        day_count: subscribtionData.day_count,
-      }),
+      body: JSON.stringify(subscribtionData, ["start_date", "day_count"]),
     }
   );
 
   if (response.status === 200) {
     successNotify("Успешно!");
+    return response.json();
   }
 
   if (response.status !== 200) {
     errorNotify("Ошибка отправки запроса!");
   }
 
-  return response.json();
+  return { error: response.json() };
 };
