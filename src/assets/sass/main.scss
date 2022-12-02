@@ -1211,7 +1211,7 @@ $medium-bold: 500;
     }
     &--active {
       color: white !important;
-      font-weight: $medium-bold;
+      // font-weight: $medium-bold;
       border-left: 2px solid $green-color !important;
       background: linear-gradient(270deg, rgba(255,255,255,0) 25%, rgba(172, 255, 46, 0.5) 100%);
     }
@@ -1896,8 +1896,8 @@ $medium-bold: 500;
   // padding: 10px 10px 50px 10px;
   transition: all 0.25s;
   position: relative;
-  border: 1px solid #663e7c7a;
-  background: linear-gradient(360deg, rgba(255, 255, 255, 0) 0%, #b888e640 100%);
+  border: 1px solid rgb(255 255 255 / 15%);
+  background: linear-gradient(360deg, rgba(255, 255, 255, 0) 0%, rgb(255 236 199 / 25%) 100%);
 
   &:hover {
     transform: translateY(-2px);
@@ -1947,7 +1947,7 @@ $medium-bold: 500;
     position: absolute;
     bottom: 0;
     border-radius: 0 0 4px 4px;
-    background: linear-gradient(360deg, rgba(255, 255, 255, 0) 0%, #c894f940 100%);
+    background: linear-gradient(360deg, rgba(255, 255, 255, 0) 0%, #8b865a40 100%);
     font-size: 1.5rem;
     font-weight: $medium-bold;
     transition: all 0.2s;
@@ -2118,7 +2118,9 @@ $medium-bold: 500;
     width: 150px;
     height: 150px;
     border: 1px solid #ffffff42;
-    border-radius: 4px;
+    border-radius: 50%;
+    background-color: #ffffff1a;
+    padding: 5px;
   }
 
   .profile-content {
@@ -2272,7 +2274,7 @@ $medium-bold: 500;
     border: 1px solid rgb(255 255 255 / 10%);
     border-radius: 50%;
     margin-top: 10px;
-    padding: 10px 10px 0 10px;
+    padding: 5px;
   }
 
   &__about-user {

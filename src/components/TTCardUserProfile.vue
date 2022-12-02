@@ -12,10 +12,10 @@
         <line x1="1" y1="1" x2="16" y2="16" stroke="white" stroke-width="2" />
       </svg>
       <div class="user-profile-card__info">
-        <template v-if="user.img">
+        <template v-if="user.image">
           <img
             class="user-profile-card__image"
-            :src="require(`@/assets/images/trainers/${user.img}.png`)"
+            :src="user.image"
             alt="user photo"
           />
         </template>

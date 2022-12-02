@@ -2,19 +2,21 @@
   <div class="profile-page">
     <h1 class="profile-page__title">Тренера</h1>
     <div class="profile-page__trainer-cards">
-      <div class="trainer-card" v-for="trainer in trainers" :key="trainer.id">
-        <p class="trainer-card__title">{{ trainer.name }}</p>
-        <template v-if="trainer.img">
-          <img
-            class="trainer-card__image"
-            :src="require(`@/assets/images/trainers/${trainer.img}.png`)"
-            :alt="trainer.imgAlt"
-          />
+      <div
+        class="trainer-card"
+        v-for="trainer in trainers"
+        :key="trainer.email"
+      >
+        <p class="trainer-card__title">
+          {{ trainer.name + " " + trainer.surname }}
+        </p>
+        <template v-if="trainer.image">
+          <img class="trainer-card__image" :src="trainer.image" />
         </template>
         <template v-else> Нет изображения </template>
         <button
           class="trainer-card__show-btn"
-          @click="showTrainerInfo(trainer.id)"
+          @click="showTrainerInfo(trainer.email)"
         ></button>
       </div>
     </div>
@@ -36,11 +38,11 @@ export default {
       }
     });
 
-    const showTrainerInfo = (id) => {
+    const showTrainerInfo = (email) => {
       store.dispatch("showUserCard");
       store.dispatch(
         "selectUser",
-        trainers.value.find((user) => user.id == id)
+        trainers.value.find((user) => user.email == email)
       );
       // showInfo.value === id ? (showInfo.value = null) : (showInfo.value = id);
     };

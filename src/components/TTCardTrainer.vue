@@ -2,7 +2,8 @@
   <div class="block-3--card">
     <div class="block-3--bg"></div>
     <div class="card-image">
-      <img :src="require(`../assets/images/trainers/${trainer.img}.png`)" />
+      <template v-if="trainer.image"><img :src="trainer.image" /></template>
+      <template v-else>Нет изображения</template>
     </div>
     <div class="information">
       <p class="information--trainerName">

@@ -1,81 +1,12 @@
 // import { $SERVICES } from "@/services/api";
 
-import { getTrainersAPI } from "@/api/workoutAPI";
+import { getClientsAPI, getStaffAPI, getTrainersAPI } from "@/api/userAPI";
 
 export default {
   state: {
     trainers: null,
-    usersList: [
-      {
-        id: 1,
-        name: "Владимир",
-        surname: "Королев",
-        patronymic: "",
-        email: "test@mail.ru",
-        phone: "+79609996655",
-        role: "trainer",
-        img: "trainer1",
-        imgAlt: "trainer",
-        workout_type: ["Персональные"],
-        bio: "Крутой тренер",
-      },
-      {
-        id: 2,
-        name: "Виктор",
-        surname: "Бородин",
-        patronymic: "",
-        email: "test@mail.ru",
-        phone: "+79609996655",
-        role: "trainer",
-        img: "trainer2",
-        imgAlt: "trainer",
-        workout_type: [
-          "Персональные",
-          "Групповые",
-          "Персональные",
-          "Групповые",
-        ],
-        bio: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore, commodi modi ipsa ex dolor, consectetur expedita error facere eius saepe labore vitae cumque laudantium! Nemo esse consectetur at, incidunt quaerat illum obcaecati aut praesentium quibusdam sapiente, earum quo! Provident fuga similique excepturi deserunt ad saepe mollitia velit, est corporis quas. Fugiat consequatur rerum at nostrum molestiae ratione perspiciatis amet aliquam a atque architecto sunt laudantium rem dignissimos nemo maiores quis consequuntur alias soluta nisi quae, dolorem molestias nesciunt veritatis? Totam at iste ipsa facere rerum earum vero ipsum architecto optio, fuga consequatur iusto ea doloremque dignissimos quae quaerat, odit maxime.",
-      },
-      {
-        id: 3,
-        name: "Елизавета",
-        surname: "Смирнова",
-        patronymic: "",
-        email: "test@mail.ru",
-        phone: "+79609996655",
-        role: "trainer",
-        img: "trainer4",
-        imgAlt: "trainer",
-        workout_type: ["Персональные"],
-        bio: "Крутой тренер",
-      },
-      {
-        id: 4,
-        name: "Инга",
-        surname: "Лунина",
-        patronymic: "",
-        email: "test@mail.ru",
-        phone: "+79609996655",
-        role: "trainer",
-        img: "trainer3",
-        imgAlt: "trainer",
-        workout_type: ["Групповые"],
-        bio: "Крутой тренер",
-      },
-      {
-        id: 5,
-        name: "Инга",
-        surname: "Лунина",
-        patronymic: "",
-        email: "test@mail.ru",
-        phone: "+79609996655",
-        role: "trainer",
-        img: "trainer6",
-        workout_type: ["Групповые"],
-        bio: "Крутой тренер",
-      },
-    ],
+    staff: null,
+    clients: null,
     showUserCard: false,
     selectedUser: null,
   },
@@ -101,6 +32,12 @@ export default {
     getTrainers(state) {
       return state.trainers;
     },
+    getStaff(state) {
+      return state.staff;
+    },
+    getClients(state) {
+      return state.clients;
+    },
   },
   mutations: {
     SHOW_USER_CARD(state) {
@@ -115,6 +52,12 @@ export default {
     GET_TRAINERS(state, trainers) {
       state.trainers = trainers;
     },
+    GET_STAFF(state, staff) {
+      state.staff = staff;
+    },
+    GET_CLIENTS(state, clients) {
+      state.clients = clients;
+    },
   },
   actions: {
     hideUserCard({ commit }) {
@@ -128,10 +71,21 @@ export default {
     },
     async getTrainers({ commit }) {
       const trainers = await getTrainersAPI();
-      trainers && commit("GET_TRAINERS", trainers);
+      if (!trainers.error) {
+        trainers && commit("GET_TRAINERS", trainers);
+      }
     },
-    // updateUsersList({ commit }, users) {
-    //   users && commit("UPDATE_USERS_LIST", users);
-    // },
+    async getStaff({ commit }) {
+      const staff = await getStaffAPI();
+      if (!staff.error) {
+        staff && commit("GET_STAFF", staff);
+      }
+    },
+    async getClients({ commit }) {
+      const clients = await getClientsAPI();
+      if (!clients.error) {
+        clients && commit("GET_CLIENTS", clients);
+      }
+    },
   },
 };

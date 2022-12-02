@@ -41,26 +41,3 @@ export const getWorkoutLocationsAPI = async () => {
 
   return { error: response.json() };
 };
-
-export const getTrainersAPI = async () => {
-  const response = await fetch(
-    `${$SERVICES.API}/users/trainers?page=1&limit=10`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "*/*",
-      },
-    }
-  );
-
-  if (response.status === 200) {
-    // successNotify("Успешно!");
-    return response.json();
-  }
-
-  if (response.status !== 200) {
-    errorNotify("Не удалось соединиться с сервером!");
-  }
-
-  return { error: response.json() };
-};

@@ -30,15 +30,36 @@
         </div>
         <div class="card__content">
           <div class="card__detail">
-            <strong>Детали тренировки:</strong>
+            <strong>Детали тренировки</strong>
             <ul>
               <li>
+                Тренер:
+                <b>
+                  {{
+                    selectedEvent.trainer &&
+                    selectedEvent.trainer.name +
+                      " " +
+                      selectedEvent.trainer.surname
+                  }}
+                </b>
+              </li>
+              <li>
+                Местоположение:<br />
+                <b>
+                  {{ selectedEvent.location && selectedEvent.location.address }}
+                </b>
+              </li>
+              <li>
                 Начало в:
-                {{ selectedEvent.start && selectedEvent.start.formatTime() }}
+                <b>
+                  {{ selectedEvent.start && selectedEvent.start.formatTime() }}
+                </b>
               </li>
               <li>
                 Конец в:
-                {{ selectedEvent.end && selectedEvent.end.formatTime() }}
+                <b>
+                  {{ selectedEvent.end && selectedEvent.end.formatTime() }}
+                </b>
               </li>
             </ul>
           </div>

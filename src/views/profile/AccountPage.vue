@@ -173,7 +173,7 @@
           </template>
         </div>
         <div class="profile-page-info__content profile-content">
-          <template v-if="user.role === 'client'">
+          <template v-if="user.role === 'client' && activeSubscription">
             <div
               class="profile-content__group"
               :class="`profile-subscription profile-subscription--${
@@ -265,7 +265,7 @@ export default {
     const user = computed(() => store.getters.getUser);
     const tokens = computed(() => store.getters.getTokens);
     const activeSubscription = computed(() => {
-      return user.value.subscription.find((sub) => sub.is_acting === false);
+      return user.value.subscription.find((sub) => sub.is_acting === true);
     });
 
     const isLoading = ref(false);

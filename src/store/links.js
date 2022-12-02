@@ -1,3 +1,5 @@
+import { getRouteAccessAPI } from "@/api/routesAPI";
+
 export default {
   state: {
     links: [
@@ -26,38 +28,7 @@ export default {
         hashLink: "trainers",
       },
     ],
-    routeAccess: [
-      {
-        name: "Профиль",
-        route: "account",
-        access: ["client", "trainer", "manager"],
-      },
-      {
-        name: "Расписание",
-        route: "schedule",
-        access: [],
-      },
-      {
-        name: "Абонементы",
-        route: "subscriptions",
-        access: ["client", "manager"],
-      },
-      {
-        name: "Тренера",
-        route: "trainers",
-        access: ["client", "manager"],
-      },
-      {
-        name: "Персонал",
-        route: "staff",
-        access: ["manager"],
-      },
-      {
-        name: "Клиенты",
-        route: "users",
-        access: ["trainer", "manager"],
-      },
-    ],
+    routeAccess: null,
   },
   getters: {
     getLinks(state) {
@@ -67,6 +38,17 @@ export default {
       return state.routeAccess;
     },
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    GET_ROUTE_ACCESS(state, routes) {
+      state.routeAccess = routes;
+    },
+  },
+  actions: {
+    async getRouteAccess({ commit }) {
+      const routes = await getRouteAccessAPI();
+      if (!routes.error) {
+        routes && commit("GET_ROUTE_ACCESS", routes);
+      }
+    },
+  },
 };

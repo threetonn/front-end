@@ -58,7 +58,10 @@ export default {
     const workoutTypes = computed(() => store.getters.getWorkoutTypes);
     const workoutLocations = computed(() => store.getters.getWorkoutLocations);
     const trainers = computed(() => store.getters.getTrainers);
+    const staff = computed(() => store.getters.getStaff);
+    const clients = computed(() => store.getters.getClients);
     const sheduleEvents = computed(() => store.getters.getScheduleEvents);
+    const routesAccess = computed(() => store.getters.getRouteAccess);
 
     const router = useRouter();
 
@@ -79,8 +82,17 @@ export default {
       if (!trainers.value) {
         store.dispatch("getTrainers");
       }
+      if (!staff.value) {
+        store.dispatch("getStaff");
+      }
+      if (!clients.value) {
+        store.dispatch("getClients");
+      }
       if (!sheduleEvents.value.length > 0) {
         store.dispatch("getScheduleEvents");
+      }
+      if (!routesAccess.value) {
+        store.dispatch("getRouteAccess");
       }
     });
 

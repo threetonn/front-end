@@ -125,3 +125,63 @@ export const sendNewUserDataAPI = async (newData, access_token) => {
 
   return response.json();
 };
+
+export const getTrainersAPI = async () => {
+  const response = await fetch(`${$SERVICES.API}/users/trainers`, {
+    method: "GET",
+    headers: {
+      Accept: "*/*",
+    },
+  });
+
+  if (response.status === 200) {
+    // successNotify("Успешно!");
+    return response.json();
+  }
+
+  if (response.status !== 200) {
+    errorNotify("Не удалось соединиться с сервером!");
+  }
+
+  return { error: response.json() };
+};
+
+export const getStaffAPI = async () => {
+  const response = await fetch(`${$SERVICES.API}/users/managers`, {
+    method: "GET",
+    headers: {
+      Accept: "*/*",
+    },
+  });
+
+  if (response.status === 200) {
+    // successNotify("Успешно!");
+    return response.json();
+  }
+
+  if (response.status !== 200) {
+    errorNotify("Не удалось соединиться с сервером!");
+  }
+
+  return { error: response.json() };
+};
+
+export const getClientsAPI = async () => {
+  const response = await fetch(`${$SERVICES.API}/users/clients`, {
+    method: "GET",
+    headers: {
+      Accept: "*/*",
+    },
+  });
+
+  if (response.status === 200) {
+    // successNotify("Успешно!");
+    return response.json();
+  }
+
+  if (response.status !== 200) {
+    errorNotify("Не удалось соединиться с сервером!");
+  }
+
+  return { error: response.json() };
+};

@@ -15,7 +15,7 @@
     </div>
     <TTBlockTitle hashLink="trainers" titleName="Наши тренера"></TTBlockTitle>
     <div class="block-3">
-      <carousel :itemsToShow="2.5" :wrapAround="true" :transition="500">
+      <carousel :itemsToShow="3" :wrapAround="true" :transition="500">
         <slide v-for="trainer in trainers" :key="trainer.id">
           <TTCardTrainer :trainer="trainer"></TTCardTrainer>
         </slide>
@@ -51,7 +51,7 @@ import TTCardProgram from "@/components/TTCardProgram.vue";
 import TTCardTrainer from "@/components/TTCardTrainer.vue";
 import TTLoginForm from "@/components/TTLoginForm.vue";
 
-import { computed } from "vue";
+import { computed, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
@@ -74,11 +74,15 @@ export default {
   setup() {
     const store = useStore();
     const programs = computed(() => store.getters.getProgramCards);
-    const trainers = computed(() => store.getters.getUsersByRole("trainer"));
+    const trainers = computed(() => store.getters.getTrainers);
     const scheduleEvents = computed(() => store.getters.getScheduleEvents);
     const loginForm = computed(() => store.getters.getActiveForm);
 
-    // console.log(loginForm.value);
+    onBeforeMount(() => {
+      if (!trainers.value) {
+        store.dispatch("getTrainers");
+      }
+    });
 
     return {
       programs,
