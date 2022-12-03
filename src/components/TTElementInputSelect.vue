@@ -10,21 +10,33 @@
         :multiple="true"
         :close-on-select="false"
         :placeholder="placeholder"
-        label="description"
+        :label="label"
         track-by="id"
         class="base-inputs__input base-inputs__input--multiselect"
         selectLabel="Нажмите Enter чтобы выбрать"
         deselectLabel="Нажмите Enter чтобы удалить"
         selectedLabel="Выбрано"
       ></VueMultiselect>
-      <button
-        class="base-inputs__button"
-        @click.prevent="changeData"
-        :disabled="!fieldValidated"
-        :class="!fieldValidated && 'disabled'"
-      >
-        <img src="@/assets/images/icons/save.png" alt="save" />
-      </button>
+      <template v-if="specialButton">
+        <button
+          class="card__btn card__btn--signUp"
+          @click.prevent="changeData"
+          :disabled="!fieldValidated"
+          :class="!fieldValidated && 'disabled'"
+        >
+          Записать
+        </button>
+      </template>
+      <template v-else>
+        <button
+          class="base-inputs__button"
+          @click.prevent="changeData"
+          :disabled="!fieldValidated"
+          :class="!fieldValidated && 'disabled'"
+        >
+          <img src="@/assets/images/icons/save.png" alt="save" />
+        </button>
+      </template>
     </div>
 
     <div
@@ -58,6 +70,9 @@ export default {
     callback: Function,
     rules: Array,
     options: Array,
+    label: String,
+    formType: String,
+    specialButton: Boolean,
   },
   setup(props) {
     const fieldValidated = ref(false);
@@ -137,11 +152,14 @@ export default {
 
     const changeData = () => {
       if (!v$.value.$invalid) {
+        if (props.formType === "workoutUsersSignUp") {
+          return props.callback({ clients: state.selected });
+        }
         const selectedList = [];
         state.selected.forEach((selectItem) => {
           selectedList.push(selectItem.name);
         });
-        props.callback({ [props.fieldName]: selectedList });
+        return props.callback({ [props.fieldName]: selectedList });
       }
     };
 

@@ -74,10 +74,26 @@
       </p>
     </div>
 
-    <div
-      class="lf-inputs__wrapper"
-      :class="{ error: v$.trainer.$errors.length }"
-    >
+    <div class="lf-inputs__wrapper" v-if="user.role === 'trainer'">
+      <div class="shedule-select">
+        <label for="user-select">Клиенты</label>
+        <div class="custom-select">
+          <select v-model="state.selectUser" id="user-select">
+            <option disabled value="">Выберите один из вариантов</option>
+            <option
+              v-for="item in clients"
+              :selected="item.id === state.selectUser"
+              :key="item.id"
+              :value="item.id"
+            >
+              {{ item.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="lf-inputs__wrapper" v-if="user.role === 'manager'">
       <div class="shedule-select">
         <label for="trainer-select">Тренер</label>
         <div class="custom-select">
@@ -93,14 +109,6 @@
             </option>
           </select>
         </div>
-      </div>
-
-      <div
-        class="input-errors"
-        v-for="error of v$.trainer.$errors"
-        :key="error.$uid"
-      >
-        <div class="error-msg">{{ error.$message }}</div>
       </div>
     </div>
 
@@ -134,10 +142,7 @@
       </div>
     </div>
 
-    <div
-      class="lf-inputs__wrapper"
-      :class="{ error: v$.trainType.$errors.length }"
-    >
+    <div class="lf-inputs__wrapper" v-if="user.role === 'manager'">
       <div class="shedule-select">
         <label for="type-select">Тип тренировки</label>
         <div class="custom-select">
@@ -153,14 +158,6 @@
             </option>
           </select>
         </div>
-      </div>
-
-      <div
-        class="input-errors"
-        v-for="error of v$.trainType.$errors"
-        :key="error.$uid"
-      >
-        <div class="error-msg">{{ error.$message }}</div>
       </div>
     </div>
 
@@ -179,7 +176,7 @@
 </template>
 
 <script>
-import { computed, ref, reactive } from "vue";
+import { computed, ref, reactive, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, required, minValue, maxValue } from "@vuelidate/validators";
@@ -189,31 +186,36 @@ export default {
   props: {
     eventID: Number,
     eventName: String,
+    eventType: String,
   },
   setup(props) {
     const store = useStore();
     const scheduleEvents = computed(() => store.getters.getScheduleEvents);
+    const personalEvents = computed(() => store.getters.getPersonalEvents);
     const workoutTypes = computed(() => store.getters.getWorkoutTypes);
     const workoutLocations = computed(() => store.getters.getWorkoutLocations);
     const trainersList = computed(() => store.getters.getTrainers);
     const tokens = computed(() => store.getters.getTokens);
+    const user = computed(() => store.getters.getUser);
+    const clients = computed(() => store.getters.getClients);
 
-    // const user = computed(() => store.getters.getUser);
     const isTrainFormActive = ref(false);
     // const selectedPersonalEvents = ref(false);
     const formIsValid = ref(false);
 
     const scheduleEventByID = computed(() => {
-      if (props.eventID) {
+      if (props.eventID && props.eventType === "group") {
         return scheduleEvents.value.find((event) => event.id === props.eventID);
+      } else {
+        return personalEvents.value.find((event) => event.id === props.eventID);
       }
-      return null;
     });
 
     const calcMinutes = (start, finish) => {
       return (new Date(finish).getTime() - new Date(start).getTime()) / 60000;
     };
 
+    // eslint-disable-next-line no-unused-vars
     const calcTrainDuration = computed(() => {
       return calcMinutes(
         scheduleEventByID.value.start,
@@ -235,22 +237,57 @@ export default {
     });
 
     const state = reactive({
-      trainName: props.eventID ? scheduleEventByID.value.title : "",
-      trainStart: props.eventID ? scheduleEventByID.value.start : "",
-      trainEnd: props.eventID ? scheduleEventByID.value.end : "",
-      trainLocation: props.eventID ? scheduleEventByID.value.location.name : "",
-      trainType: props.eventID ? scheduleEventByID.value.type : "",
-      trainer: props.eventID ? scheduleEventByID.value.trainer.email : "",
-      trainDuration: props.eventID ? calcTrainDuration.value : 0,
+      // trainName: "",
+      // trainStart: "",
+      // trainEnd: "",
+      // trainLocation: "",
+      // trainType: "",
+      // trainer: "",
+      // trainDuration: 0,
+      // selectUser: "",
+      trainName:
+        props.eventID &&
+        scheduleEventByID.value.title &&
+        props.eventName === "update"
+          ? scheduleEventByID.value.title
+          : "",
+      trainStart:
+        props.eventID && props.eventName === "update"
+          ? scheduleEventByID.value.start
+          : "",
+      trainEnd:
+        props.eventID && props.eventName === "update"
+          ? scheduleEventByID.value.end
+          : "",
+      trainLocation:
+        props.eventID && props.eventName === "update"
+          ? scheduleEventByID.value.location.name
+          : "",
+      trainType:
+        props.eventID && props.eventName === "update"
+          ? scheduleEventByID.value.type
+          : "",
+      trainer:
+        props.eventID && props.eventName === "update"
+          ? scheduleEventByID.value.trainer.email
+          : "",
+      trainDuration:
+        props.eventID && props.eventName === "update"
+          ? calcTrainDuration.value
+          : 0,
+      selectUser:
+        props.eventID &&
+        scheduleEventByID.value.clients &&
+        props.eventName === "update"
+          ? scheduleEventByID.value.clients[0]
+          : "",
     });
-
-    console.log(state);
 
     const endDate = computed(() => {
       if (state.trainStart) {
         return new Date(
           new Date(state.trainStart).setMinutes(
-            new Date().getMinutes() + state.trainDuration
+            new Date(state.trainStart).getMinutes() + state.trainDuration
           )
         );
       }
@@ -306,18 +343,18 @@ export default {
             required
           ),
         },
-        trainType: {
-          required: helpers.withMessage(
-            "Поле обязательно для заполнения",
-            required
-          ),
-        },
-        trainer: {
-          required: helpers.withMessage(
-            "Поле обязательно для заполнения",
-            required
-          ),
-        },
+        // trainType: {
+        //   required: helpers.withMessage(
+        //     "Поле обязательно для заполнения",
+        //     required
+        //   ),
+        // },
+        // trainer: {
+        //   required: helpers.withMessage(
+        //     "Поле обязательно для заполнения",
+        //     required
+        //   ),
+        // },
       };
     });
 
@@ -343,8 +380,15 @@ export default {
       state.trainLocation = "";
       state.trainType = "";
       state.trainer = "";
+      state.selectUser = "";
       state.trainDuration = 0;
     };
+
+    onBeforeMount(() => {
+      if (props.eventName === "create") {
+        clearForm();
+      }
+    });
 
     const onClickScheduleButton = () => {
       if (props.eventName === "create") {
@@ -360,25 +404,37 @@ export default {
     };
 
     const addTrain = () => {
-      state.trainEnd = new Date(endDate.value).toISOString();
-      state.trainStart = new Date(state.trainStart).toISOString();
+      // state.trainEnd = new Date(endDate.value).toISOString();
+      // state.trainStart = new Date(state.trainStart).toISOString();
+      state.trainEnd = new Date(
+        new Date(endDate.value).getTime() -
+          new Date(endDate.value).getTimezoneOffset() * 60000
+      ).toISOString();
+      state.trainStart = new Date(
+        new Date(state.trainStart).getTime() -
+          new Date(state.trainStart).getTimezoneOffset() * 60000
+      ).toISOString();
 
       if (checkValidations()) {
         const trainData = {
           name: state.trainName,
           start_date: state.trainStart,
           end_date: state.trainEnd,
-          workout_type: state.trainType,
           gym: state.trainLocation,
           trainer: state.trainer,
+          client_id: state.selectUser,
         };
+        if (user.value.role === "manager") {
+          trainData.workout_type = state.trainType;
+        }
         store.dispatch("addTrainInSchedule", {
           access_token: tokens.value.access_token,
           train: trainData,
+          role: user.value.role,
         });
-        clearForm();
         isTrainFormActive.value = false;
         successNotify("Тренировка добавлена!");
+        clearForm();
         return store.dispatch("hideScheduleEventsForm");
       } else {
         return errorNotify("Не удалось добавить тренировку");
@@ -386,8 +442,14 @@ export default {
     };
 
     const editTrain = () => {
-      state.trainEnd = new Date(endDate.value).toISOString();
-      state.trainStart = new Date(state.trainStart).toISOString();
+      state.trainEnd = new Date(
+        new Date(endDate.value).getTime() -
+          new Date(endDate.value).getTimezoneOffset() * 60000
+      ).toISOString();
+      state.trainStart = new Date(
+        new Date(state.trainStart).getTime() -
+          new Date(state.trainStart).getTimezoneOffset() * 60000
+      ).toISOString();
 
       if (checkValidations()) {
         const trainData = {
@@ -397,15 +459,17 @@ export default {
           workout_type: state.trainType,
           gym: state.trainLocation,
           trainer: state.trainer,
+          selectUser: state.selectUser,
         };
         store.dispatch("editTrainInSchedule", {
           id: props.eventID,
           access_token: tokens.value.access_token,
           train: trainData,
+          role: user.value.role,
         });
-        clearForm();
         isTrainFormActive.value = false;
         successNotify("Тренировка обновлена!");
+        clearForm();
         return store.dispatch("hideScheduleEventsForm");
       } else {
         return errorNotify("Не удалось обновить тренировку");
@@ -433,6 +497,8 @@ export default {
       endDate,
       buttonStyle,
       formIsValid,
+      user,
+      clients,
     };
   },
 };

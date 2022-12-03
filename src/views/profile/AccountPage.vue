@@ -137,6 +137,7 @@
             <TTElementInputSelect
               :selected="user.workout_type"
               fieldName="workout_type"
+              label="description"
               type="text"
               placeholder="Проводимые тренировки"
               :callback="(userData) => sendUserData(userData)"
@@ -264,6 +265,7 @@ export default {
 
     const user = computed(() => store.getters.getUser);
     const tokens = computed(() => store.getters.getTokens);
+    const workoutTypes = computed(() => store.getters.getWorkoutTypes);
     const activeSubscription = computed(() => {
       return user.value.subscription.find((sub) => sub.is_acting === true);
     });
@@ -356,6 +358,7 @@ export default {
       photoErrorMessage,
       sendUserData,
       activeSubscription,
+      workoutTypes,
     };
   },
 };

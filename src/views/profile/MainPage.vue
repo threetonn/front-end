@@ -60,7 +60,7 @@ export default {
     const trainers = computed(() => store.getters.getTrainers);
     const staff = computed(() => store.getters.getStaff);
     const clients = computed(() => store.getters.getClients);
-    const sheduleEvents = computed(() => store.getters.getScheduleEvents);
+    const scheduleEvents = computed(() => store.getters.getScheduleEvents);
     const routesAccess = computed(() => store.getters.getRouteAccess);
 
     const router = useRouter();
@@ -88,7 +88,7 @@ export default {
       if (!clients.value) {
         store.dispatch("getClients");
       }
-      if (!sheduleEvents.value.length > 0) {
+      if (!scheduleEvents.value.length > 0) {
         store.dispatch("getScheduleEvents");
       }
       if (!routesAccess.value) {

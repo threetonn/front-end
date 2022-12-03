@@ -2,6 +2,10 @@ import { errorNotify, successNotify } from "@/services/notifications";
 import { $SERVICES } from "./api";
 
 function normalizeEventsScheduleData(data) {
+  function randomInteger(min, max) {
+    let rand = min + Math.random() * (max + 1 - min);
+    return Math.floor(rand);
+  }
   if (Array.isArray(data)) {
     return data.map((event) => {
       return {
@@ -12,7 +16,8 @@ function normalizeEventsScheduleData(data) {
         location: event.gym,
         type: event.workout_type,
         trainer: event.trainer,
-        class: "split2",
+        clients: event.clients,
+        class: `split${randomInteger(1, 4)}`,
       };
     });
   }
@@ -24,7 +29,8 @@ function normalizeEventsScheduleData(data) {
     location: data.gym,
     type: data.workout_type,
     trainer: data.trainer,
-    class: "split2",
+    clients: data.clients,
+    class: `split${randomInteger(1, 4)}`,
   };
 }
 
@@ -50,8 +56,45 @@ export const getScheduleEventsAPI = async () => {
   return { error: response.json() };
 };
 
+export const getSchedulePesonalEventsAPI = async (data) => {
+  let query = "";
+  if (data.role === "trainer") {
+    query = `${$SERVICES.API}/workout/trainer/me`;
+  }
+  if (data.role === "client") {
+    query = `${$SERVICES.API}/workout/client/me`;
+  }
+  const response = await fetch(query, {
+    method: "GET",
+    headers: {
+      Accept: "*/*",
+      Authorization: `Bearer ${data.access_token}`,
+    },
+  });
+
+  if (response.status === 200) {
+    const resData = await response.json();
+    const result = normalizeEventsScheduleData(resData);
+
+    return result;
+  }
+
+  if (response.status !== 200) {
+    errorNotify("Не удалось соединиться с сервером!");
+  }
+
+  return { error: response.json() };
+};
+
 export const addTrainInSheduleAPI = async (trainData) => {
-  const response = await fetch(`${$SERVICES.API}/workout/manager/add`, {
+  let query = "";
+  if (trainData.role === "manager") {
+    query = `${$SERVICES.API}/workout/manager/add`;
+  }
+  if (trainData.role === "trainer") {
+    query = `${$SERVICES.API}/workout/trainer/personal/add`;
+  }
+  const response = await fetch(query, {
     method: "POST",
     headers: {
       Accept: "*/*",
@@ -77,18 +120,22 @@ export const addTrainInSheduleAPI = async (trainData) => {
 };
 
 export const editTrainInSheduleAPI = async (trainData) => {
-  const response = await fetch(
-    `${$SERVICES.API}/workout/manager/${trainData.id}/edit`,
-    {
-      method: "PUT",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${trainData.access_token}`,
-      },
-      body: JSON.stringify(trainData.train),
-    }
-  );
+  let query = "";
+  if (trainData.role === "manager") {
+    query = `${$SERVICES.API}/workout/manager/${trainData.id}/edit`;
+  }
+  if (trainData.role === "trainer") {
+    query = `${$SERVICES.API}/workout/trainer/${trainData.id}/edit`;
+  }
+  const response = await fetch(query, {
+    method: "PUT",
+    headers: {
+      Accept: "*/*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${trainData.access_token}`,
+    },
+    body: JSON.stringify(trainData.train),
+  });
 
   if (response.status === 200) {
     successNotify("Успешно!");
@@ -123,6 +170,85 @@ export const deleteTrainInSheduleAPI = async (trainData) => {
 
   if (response.status === 202) {
     successNotify("Успешно!");
+    return response.json();
+  }
+
+  if (response.status !== 202) {
+    errorNotify("Не удалось соединиться с сервером!");
+  }
+
+  return { error: response.json() };
+};
+
+export const signUpUsersForTrainAPI = async (trainData) => {
+  const response = await fetch(
+    `${$SERVICES.API}/workout/manager/${trainData.id}/subscribe/`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${trainData.access_token}`,
+      },
+      body: JSON.stringify(trainData.clients),
+    }
+  );
+
+  if (response.status === 201) {
+    successNotify("Успешно!");
+
+    return response.json();
+  }
+
+  if (response.status !== 201) {
+    errorNotify("Не удалось соединиться с сервером!");
+  }
+
+  return { error: response.json() };
+};
+
+export const signUpClientInTrainAPI = async (trainData) => {
+  const response = await fetch(
+    `${$SERVICES.API}/workout/group/${trainData.id}/subscribe`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${trainData.access_token}`,
+      },
+    }
+  );
+
+  if (response.status === 201) {
+    successNotify("Успешно!");
+
+    return response.json();
+  }
+
+  if (response.status !== 201) {
+    errorNotify("Не удалось соединиться с сервером!");
+  }
+
+  return { error: response.json() };
+};
+
+export const unSignUpClientInTrainAPI = async (trainData) => {
+  const response = await fetch(
+    `${$SERVICES.API}/workout/group/${trainData.id}/unsubscribe`,
+    {
+      method: "DELETE",
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${trainData.access_token}`,
+      },
+    }
+  );
+
+  if (response.status === 202) {
+    successNotify("Успешно!");
+
     return response.json();
   }
 

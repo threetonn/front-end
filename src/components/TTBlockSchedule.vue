@@ -67,18 +67,39 @@
             <button
               class="card__btn card__btn--signUp"
               @click="signUpTrain(selectedEvent.id)"
+              v-if="
+                userRole === 'client' && !selectedEvent.clients.includes(userID)
+              "
             >
               Записаться
             </button>
             <button
+              class="card__btn card__btn--unSignUp"
+              @click="unSignUpTrain(selectedEvent.id)"
+              v-if="
+                userRole === 'client' && selectedEvent.clients.includes(userID)
+              "
+            >
+              Отписаться
+            </button>
+            <button
+              class="card__btn card__btn--signUpUsers"
+              @click="signUpUsersForTrain(selectedEvent.id)"
+              v-if="userRole === 'manager'"
+            >
+              Записать клиентов
+            </button>
+            <button
               class="card__btn card__btn--edit"
               @click="editTrain(selectedEvent.id)"
+              v-if="userRole !== 'client'"
             >
               Изменить
             </button>
             <button
               class="card__btn card__btn--delete"
               @click="deleteTrain(selectedEvent.id)"
+              v-if="userRole !== 'client'"
             >
               Удалить
             </button>
@@ -102,8 +123,12 @@ export default {
     events: Object,
     noEventClick: Boolean,
     signUpTrainCallback: Function,
+    unSignUpTrainCallback: Function,
+    signUpUsersForTrainCallback: Function,
     editTrainCallback: Function,
     deleteTrainCallback: Function,
+    userRole: String,
+    userID: Number,
   },
   setup(props) {
     const selectedEvent = ref({});
@@ -127,6 +152,16 @@ export default {
       handleClose();
     };
 
+    const unSignUpTrain = (eventID) => {
+      props.unSignUpTrainCallback(eventID);
+      handleClose();
+    };
+
+    const signUpUsersForTrain = (eventID) => {
+      props.signUpUsersForTrainCallback(eventID);
+      handleClose();
+    };
+
     const editTrain = (eventID) => {
       props.editTrainCallback(eventID);
       handleClose();
@@ -143,6 +178,8 @@ export default {
       selectedEvent,
       handleClose,
       signUpTrain,
+      unSignUpTrain,
+      signUpUsersForTrain,
       editTrain,
       deleteTrain,
     };

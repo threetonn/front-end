@@ -8,15 +8,20 @@
     <TTBlockTitle hashLink="program" titleName="Наши программы"></TTBlockTitle>
     <div class="block-2">
       <TTCardProgram
-        v-for="program in programs"
+        v-for="program in workoutTypes"
         :key="program.id"
         :program="program"
       ></TTCardProgram>
     </div>
     <TTBlockTitle hashLink="trainers" titleName="Наши тренера"></TTBlockTitle>
     <div class="block-3">
-      <carousel :itemsToShow="3" :wrapAround="true" :transition="500">
-        <slide v-for="trainer in trainers" :key="trainer.id">
+      <carousel
+        v-if="trainers"
+        itemsToShow="2.5"
+        :wrapAround="true"
+        :transition="500"
+      >
+        <slide v-for="(trainer, idx) in trainers" :key="idx">
           <TTCardTrainer :trainer="trainer"></TTCardTrainer>
         </slide>
 
@@ -73,22 +78,28 @@ export default {
   },
   setup() {
     const store = useStore();
-    const programs = computed(() => store.getters.getProgramCards);
     const trainers = computed(() => store.getters.getTrainers);
     const scheduleEvents = computed(() => store.getters.getScheduleEvents);
     const loginForm = computed(() => store.getters.getActiveForm);
+    const workoutTypes = computed(() => store.getters.getWorkoutTypes);
 
     onBeforeMount(() => {
       if (!trainers.value) {
         store.dispatch("getTrainers");
       }
+      if (scheduleEvents.value.length === 0) {
+        store.dispatch("getScheduleEvents");
+      }
+      if (!workoutTypes.value) {
+        store.dispatch("setWorkoutTypes");
+      }
     });
 
     return {
-      programs,
       trainers,
       scheduleEvents,
       loginForm,
+      workoutTypes,
     };
   },
 };

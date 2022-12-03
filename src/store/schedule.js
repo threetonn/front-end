@@ -3,55 +3,22 @@ import {
   deleteTrainInSheduleAPI,
   editTrainInSheduleAPI,
   getScheduleEventsAPI,
+  getSchedulePesonalEventsAPI,
 } from "@/api/sheduleAPI";
 
 export default {
   state: {
-    // scheduleEvents: [
-    //   {
-    //     id: 1,
-    //     start: "2022-10-18 10:30",
-    //     end: "2022-10-18 14:30",
-    //     title: "Групповая тренировка",
-    //     location: { id: 2, name: "Локация" },
-    //     type: { id: 1, name: "Йога" },
-    //     class: "split1",
-    //   },
-    //   {
-    //     id: 2,
-    //     start: "2022-10-20 10:30",
-    //     end: "2022-10-20 12:30",
-    //     title: "Йога",
-    //     location: "",
-    //     type: "",
-    //     class: "split2",
-    //   },
-    //   {
-    //     id: 3,
-    //     start: "2022-10-18 15:30",
-    //     end: "2022-10-18 18:30",
-    //     title: "Персональные тренировки",
-    //     location: "",
-    //     type: "",
-    //     class: "split3",
-    //   },
-    //   {
-    //     id: 4,
-    //     start: "2022-10-19 16:30",
-    //     end: "2022-10-19 20:30",
-    //     title: "Персональные тренировки",
-    //     location: "",
-    //     type: "",
-    //     class: "split4",
-    //   },
-    // ],
     scheduleEvents: [],
+    schedulePersonalEvents: [],
     scheduleEventsFormActive: false,
     scheduleSelectedEventID: null,
   },
   getters: {
     getScheduleEvents(state) {
       return state.scheduleEvents;
+    },
+    getPersonalEvents(state) {
+      return state.schedulePersonalEvents;
     },
     getScheduleEventsFormActive(state) {
       return state.scheduleEventsFormActive;
@@ -74,19 +41,41 @@ export default {
       state.scheduleEvents = events;
     },
     ADD_TRAIN_IN_SCHEDULE(state, train) {
-      state.scheduleEvents.push(train);
+      if (train.type === "personal") {
+        return state.schedulePersonalEvents.push(train);
+      }
+      return state.scheduleEvents.push(train);
     },
     // eslint-disable-next-line no-unused-vars
     EDIT_TRAIN_IN_SCHEDULE(state, train) {
+      if (train.type === "personal") {
+        const filteredEvents = state.schedulePersonalEvents.filter(
+          (event) => event.id !== train.id
+        );
+        return (state.schedulePersonalEvents = [...filteredEvents, train]);
+      }
       const filteredEvents = state.scheduleEvents.filter(
         (event) => event.id !== train.id
       );
-      state.scheduleEvents = [...filteredEvents, train];
+      return (state.scheduleEvents = [...filteredEvents, train]);
     },
     DELETE_TRAIN_IN_SCHEDULE(state, id) {
+      const concateItems = [
+        ...state.scheduleEvents,
+        ...state.schedulePersonalEvents,
+      ];
+      const findItem = concateItems.find((item) => item.id === id);
+      if (findItem.type === "personal") {
+        state.schedulePersonalEvents = state.schedulePersonalEvents.filter(
+          (event) => event.id !== id
+        );
+      }
       state.scheduleEvents = state.scheduleEvents.filter(
         (event) => event.id !== id
       );
+    },
+    GET_SHEDULE_PERSONAL_EVENTS(state, events) {
+      state.schedulePersonalEvents = events;
     },
   },
   actions: {
@@ -98,6 +87,12 @@ export default {
     },
     setScheduleSelectEventId({ commit }, id) {
       commit("SET_SCHEDULE_SELECT_EVENT_ID", id);
+    },
+    async getSchedulePesonalEvents({ commit }, data) {
+      const events = await getSchedulePesonalEventsAPI(data);
+      if (!events.error) {
+        events && commit("GET_SHEDULE_PERSONAL_EVENTS", events);
+      }
     },
     async getScheduleEvents({ commit }) {
       const events = await getScheduleEventsAPI();

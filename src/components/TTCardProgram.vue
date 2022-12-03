@@ -1,16 +1,10 @@
 <template>
   <div class="block-2--card">
-    <!-- <div class="block-2--bg"></div> -->
-    <img
-      :src="require(`../assets/images/programs/${program.imageName}.png`)"
-      :alt="program.imageAlt"
-    />
+    <img :src="program.image" />
     <div class="block-2--image-text">
-      <p>{{ program.nameRU }}</p>
+      <p>{{ program.description }}</p>
 
-      <!-- <router-link> -->
-      <button class="default-btn">Записаться</button>
-      <!-- </router-link> -->
+      <!-- <button class="default-btn">Записаться</button> -->
     </div>
   </div>
 </template>

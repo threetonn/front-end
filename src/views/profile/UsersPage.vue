@@ -26,7 +26,6 @@ export default {
   setup() {
     const store = useStore();
     const clients = computed(() => store.getters.getClients);
-    console.log(clients);
     // const showInfo = ref(null);
 
     onBeforeMount(() => {
